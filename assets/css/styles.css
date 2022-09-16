@@ -101,17 +101,17 @@ body.dark-theme{
 }
 
 /*==================== BASE ====================*/
-* {
+*{
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
-html {
+html{
   scroll-behavior: smooth;
 }
 
-body {
+body{
   margin: 0 0 var(--header-height) 0;
   font-family: var(--body-font);
   font-size: var(--normal-font-size);
@@ -119,58 +119,58 @@ body {
   color: var(--text-color);
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4{
   color: var(--title-color);
   font-weight: var(--font-semi-bold);
 }
 
-ul {
+ul{
   list-style: none;
 }
 
-a {
+a{
   text-decoration: none;
 }
 
-img {
+img{
   max-width: 100%;
   height: auto;
 }
 
 /*==================== REUSABLE CSS CLASSES ====================*/
-.section {
+.section{
   padding: 2rem 0 4rem;
 }
 
-.section__title {
+.section__title{
   font-size: var(--h1-font-size);
   color: var(--title-color);
 }
 
-.section__subtitle {
+.section__subtitle{
   display: block;
   font-size: var(--small-font-size);
   margin-bottom: var(--mb-3);
 }
 
 .section__title, 
-.section__subtitle {
+.section__subtitle{
   text-align: center;
 }
 
 /*==================== LAYOUT ====================*/
-.container {
+.container{
   max-width: 768px;
   margin-left: var(--mb-1-5);
   margin-right: var(--mb-1-5);
 }
 
-.grid {
+.grid{
   display: grid;
   gap: 1.5rem;
 }
 
-.header {
+.header{
   width: 100%;
   position: fixed;
   bottom: 0;
@@ -1071,7 +1071,7 @@ img {
     justify-self: center;
   }
 
-  .about__container,
+  /* .about__container, */
   .skills__container,
   .portfolio__content,
   .project__container,
@@ -1079,6 +1079,9 @@ img {
   .footer__container{
     grid-template-columns: repeat(2, 1fr);
   }
+
+
+
 
   .qualification__sections{
     display: grid;
@@ -1171,9 +1174,9 @@ img {
     text-align: initial;
   }
 
-  .about__info{
+  /* .about__info{
     justify-content: space-between;
-  }
+  } */
 
   .qualification__tabs{
     justify-content: center;
@@ -1313,4 +1316,6 @@ img {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+
 

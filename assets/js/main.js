@@ -151,3 +151,27 @@ themeButton.addEventListener('click', () => {
     localStorage.setItem('selected-theme', getCurrentTheme());
     localStorage.setItem('selected-icon', getCurrentIcon());
 });
+
+
+//EMAILJS
+
+const btn = document.getElementById('form-btn');
+
+document.getElementById('form')
+ .addEventListener('submit', function(event) {
+   event.preventDefault();
+
+   btn.value = 'Enviando mensaje...';
+
+   const serviceID = 'default_service';
+   const templateID = 'template_03oflug';
+
+   emailjs.sendForm(serviceID, templateID, this)
+    .then(() => {
+      btn.value = 'Enviar mensaje';
+      alert('¡Mensaje enviado correctamente!');
+    }, (err) => {
+      btn.value = 'Enviar mensaje';
+      alert(JSON.stringify(err));
+    });
+});

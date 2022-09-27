@@ -153,8 +153,7 @@ themeButton.addEventListener('click', () => {
 });
 
 
-//EMAILJS
-
+/*==================== EMAIL JS ====================*/ 
 const btn = document.getElementById('form-btn');
 
 document.getElementById('form')

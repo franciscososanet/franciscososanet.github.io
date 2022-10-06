@@ -808,6 +808,11 @@ img{
   justify-self: center;
 }
 
+.project__container{
+  padding: 0rem 0.5rem 3rem 0.5rem;
+  /* grid-template-columns: 1fr max-content; */
+}
+
 
 /*==================== TESTIMONIAL ====================*/
 .testimonial__data,
@@ -991,6 +996,7 @@ img{
 
 /*==================== MEDIA QUERIES ====================*/
 /* For small devices */
+/* ESTE YA ESTA LISTO */
 @media screen and (max-width: 350px){
   .container{
     margin-left: var(--mb-1);
@@ -1053,10 +1059,17 @@ img{
   .testimonial__description{
     text-align: center;
   }
+
+  .project__container{
+    background-color: var(--first-color-second);
+    border-radius: 1rem;
+    padding: 0rem 0.5rem 2rem 0.5rem;
+  }
 }
 
 
 /* For medium devices */
+/* este no es */
 @media screen and (min-width: 568px){
   .home__content{
     grid-template-columns: max-content 1fr 1fr;
@@ -1074,23 +1087,28 @@ img{
   /* .about__container, */
   .skills__container,
   .portfolio__content,
-  .project__container,
+  /* .project__container, */
   .contact__container,
   .footer__container{
     grid-template-columns: repeat(2, 1fr);
   }
-
-
-
 
   .qualification__sections{
     display: grid;
     grid-template-columns: .6fr;
     justify-content: center;
   }
+
+  .project__container{
+    background-color: var(--first-color-second);
+    border-radius: 1rem;
+    padding: 1rem 2.5rem 2.5rem 3rem;
+    grid-template-columns: 1fr max-content;
+    column-gap: 3rem;
+  }
 }
 
-
+/* este no es */
 @media screen and (min-width: 768px){
   .container{
     margin-left: auto;
@@ -1240,7 +1258,7 @@ img{
   }
 
   .footer__container{
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .footer__bg{
@@ -1315,6 +1333,7 @@ img{
   .contact__inputs{
     grid-template-columns: repeat(2, 1fr);
   }
+
 }
 
 

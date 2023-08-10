@@ -1108,7 +1108,6 @@ img{
   }
 }
 
-/* este no es */
 @media screen and (min-width: 768px){
   .container{
     margin-left: auto;
@@ -1336,5 +1335,84 @@ img{
 
 }
 
+/* LICENCIAS */
+:root{
+  --height-difference: 2rem;
+}
 
+.plan-container.plan-grid {
+  display: flex;
+  justify-content: center; /* Centra los planes horizontalmente */
+  gap: 2rem;
+  max-width: 100%; /* Asegurarse de que no exceda el ancho de la pantalla */
+  margin: 0 auto; /* Centra el contenedor en la pantalla */
+  align-items: center;
+}
 
+.plan {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--text-color-light);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  transition: transform 0.3s;
+  width: 18rem; /* Establece un ancho fijo para los planes */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 26rem;
+  margin-top: calc(var(--height-difference) / 2); /* Añade la mitad de la diferencia al margen superior */
+  margin-bottom: calc(var(--height-difference) / 2); /* Añade la mitad de la diferencia al margen inferior */
+}
+
+.plan ul {
+  margin: 1rem 0;
+  list-style: circle;
+}
+
+.plan li {
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.plan .button {
+  width: 70%;
+  margin: 0 auto;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.premium-label {
+  position: absolute;
+  top:-10%;
+  left: 10%;
+  width: 70%; /* Aumentamos el ancho */
+  height: 10%; /* Aumentamos la altura */
+  transform: rotate(-45deg) translate(-50%, -50%); /* Centramos el label y lo rotamos */
+  background-color: red;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  z-index: 2;
+  overflow: hidden; /* Esconde cualquier parte del label que pueda sobrepasar el .plan */
+}
+
+.premium {
+  position: relative;
+  height: calc(26rem + var(--height-difference)); /* Añade la diferencia completa a la altura */
+}
+
+.plan:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.premium:hover {
+  transform: scale(1.05);
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/licencias.css">
+    <title>Planes de Pago</title>
+</head>
+<body>
+    <header>
+        <h1>Elige Tu Plan de Licencia</h1>
+    </header>
+    <main>
+        <section class="plan">
+            <h2>Plan Básico</h2>
+            <p>Acceso a funciones básicas por $9.99 al mes.</p>
+            <ul>
+                <li>Función A</li>
+                <li>Función B</li>
+                <li>Soporte técnico limitado</li>
+            </ul>
+            <button>Comprar</button>
+        </section>
+
+        <section class="plan">
+            <h2>Plan Premium</h2>
+            <p>Acceso a funciones avanzadas por $19.99 al mes.</p>
+            <ul>
+                <li>Función A</li>
+                <li>Función B</li>
+                <li>Función C</li>
+                <li>Soporte técnico 24/7</li>
+            </ul>
+            <button>Comprar</button>
+        </section>
+
+        <section class="plan">
+            <h2>Plan Empresarial</h2>
+            <p>Acceso a funciones empresariales por $49.99 al mes.</p>
+            <ul>
+                <li>Función A</li>
+                <li>Función B</li>
+                <li>Función C</li>
+                <li>Función D</li>
+                <li>Soporte técnico prioritario</li>
+            </ul>
+            <button>Comprar</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 TuEmpresa. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Modales -->
+    <div id="modalBasic" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalBasic')">&times;</span>
+            <h2>Plan Básico</h2>
+            <p>Elige un método de pago:</p>
+            <ul>
+                <li>Paypal</li>
+                <li><a href="https://www.mercadopago.com/" onclick="alert('Simulación de redirección a MercadoPago para pagar $1 peso argentino.'); return false;">MercadoPago</a></li>
+                <li>Transferencia bancaria</li>
+                <li>Tarjetas de crédito/débito</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="modalPremium" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalPremium')">&times;</span>
+            <h2>Plan Premium</h2>
+            <p>Elige un método de pago:</p>
+            <ul>
+                <li>Paypal</li>
+                <li><a href="https://www.mercadopago.com/" onclick="alert('Simulación de redirección a MercadoPago para pagar $1 peso argentino.'); return false;">MercadoPago</a></li>
+                <li>Transferencia bancaria</li>
+                <li>Tarjetas de crédito/débito</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="modalBusiness" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalBusiness')">&times;</span>
+            <h2>Plan Empresarial</h2>
+            <p>Elige un método de pago:</p>
+            <ul>
+                <li>Paypal</li>
+                <li><a href="https://www.mercadopago.com/" onclick="alert('Simulación de redirección a MercadoPago para pagar $1 peso argentino.'); return false;">MercadoPago</a></li>
+                <li>Transferencia bancaria</li>
+                <li>Tarjetas de crédito/débito</li>
+            </ul>
+        </div>
+    </div>
+    
+
+    <!--==================== LICENCIAS JS ====================-->
+    <script src="/assets/js/licencias.js"></script>
+
+
+</body>
+</html>

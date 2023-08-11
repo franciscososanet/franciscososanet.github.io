@@ -10,15 +10,15 @@ export const createOrder = async(req, res) => {
     const result = await mercadopago.preferences.create({
         items: [
             {
-                title: "Auriculares Razer Kitty",
-                unit_price: 15000,
+                title: "Licencia MENSUAL franciscososa.net",
+                unit_price: 25000,
                 currency_id: "ARS",
                 quantity: 1
             },
         ],
         back_urls: {
             success: `${HOST}/success`,
-            failure: `${HOST}/failure`,
+            failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
         notification_url: "https://2e94-2800-810-548-8427-a9ee-20df-9013-cc03.ngrok.io/webhook",

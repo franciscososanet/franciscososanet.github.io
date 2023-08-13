@@ -1,5 +1,5 @@
 import mercadopago from "mercadopago";
-import { HOST, MERCADOPAGO_API_KEY } from "../config.js";
+import { HOST, MERCADOPAGO_API_KEY, PORT } from "../config.js";
 
 export const createOrder = async(req, res) => {
     
@@ -10,8 +10,8 @@ export const createOrder = async(req, res) => {
     const result = await mercadopago.preferences.create({
         items: [
             {
-                title: "Licencia MENSUAL franciscososa.net",
-                unit_price: 25000,
+                title: "Producto de prueba de cobro",
+                unit_price: 5,
                 currency_id: "ARS",
                 quantity: 1
             },
@@ -21,7 +21,8 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url: "https://2e94-2800-810-548-8427-a9ee-20df-9013-cc03.ngrok.io/webhook",
+        notification_url:  "https://2e94-2800-810-548-8427-a9ee-20df-9013-cc03.ngrok.io/webhook",
+        // `http://localhost:${PORT}/webhook` -> notification url
     });
 
     console.log(result);
@@ -40,6 +41,7 @@ export const receiveWebhook = async(req, res) => {
         if(payment.type === "payment"){
             const data = await mercadopago.payment.findById(payment['data.id']);
             console.log(data);
+            // aca guardaria en la base de datos toda la data
         }
         res.sendStatus(204);
     }catch(error){

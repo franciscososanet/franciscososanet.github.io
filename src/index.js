@@ -6,10 +6,9 @@ import path from "path";
 
 const app = express();
 
+app.use(express.json());
 app.use(morgan('dev'));
-
 app.use(paymentRoutes);
-
 app.use(express.static(path.resolve('src/public')));
 
 app.listen(PORT);

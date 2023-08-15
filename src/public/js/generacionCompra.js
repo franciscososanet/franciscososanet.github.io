@@ -20,18 +20,33 @@ function checkFormValidity(event){
 }
 
 async function handleCheckout(event) {
-    event.preventDefault(); //Evitar que el formulario se envíe automáticamente
+    event.preventDefault(); // Evitar que el formulario se envíe automáticamente
 
     const modal = event.target.closest('.services__modal');
     const emailInput = modal.querySelector('input[type="email"]');
     const paypalOption = modal.querySelector('input[value="paypal"]');
     const mercadoPagoOption = modal.querySelector('input[value="mercadopago"]');
-    const product = event.target.getAttribute('data-product'); //Obtener el producto seleccionado
+    const product = event.target.getAttribute('data-product'); // Obtener el producto seleccionado
 
-    if(paypalOption.checked){
-        alert('Hola PayPal');
-    }else if (mercadoPagoOption.checked){
+    if (paypalOption.checked) {
+        const response = await fetch('/paypal/create-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ product }) // Enviar el producto seleccionado al servidor
+        });
 
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            alert('Error: ' + errorMessage);
+            return;
+        }
+
+        const data = await response.json();
+        window.location.href = data.links[1].href; // Redirigir al usuario a la URL de PayPal
+
+    } else if (mercadoPagoOption.checked) {
         const response = await fetch('/create-order', {
             method: 'POST',
             headers: {
@@ -40,7 +55,7 @@ async function handleCheckout(event) {
             body: JSON.stringify({ product }) // Enviar el producto seleccionado al servidor
         });
 
-        if(!response.ok){
+        if (!response.ok) {
             const errorMessage = await response.text();
             alert('Error: ' + errorMessage);
             return;
@@ -50,7 +65,7 @@ async function handleCheckout(event) {
         console.log(data);
         window.location.href = data.init_point;
 
-    }else{
+    } else {
         alert('Por favor, selecciona un método de pago.');
     }
 }

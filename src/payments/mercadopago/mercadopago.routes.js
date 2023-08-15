@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createOrder, receiveWebhook } from '../controllers/payment.controller.js';
+import { createOrder, receiveWebhook } from './mercadopago.controller.js';
 
 const router = Router();
 

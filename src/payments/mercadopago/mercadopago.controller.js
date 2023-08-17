@@ -1,6 +1,7 @@
 import mercadopago from "mercadopago";
 import { MERCADOPAGO_API_KEY} from "../mercadopago/mercadopago.config.js";
-import { HOST, PORT } from '../../config.js'
+import { HOST } from '../../config.js'
+import Transaction from "../../models/transaction.model.js";
 
 export const createOrder = async(req, res) => {
     
@@ -12,7 +13,7 @@ export const createOrder = async(req, res) => {
 
     let item;
 
-    switch (product) {
+    switch (product){
         case 'checkoutMensual':
             item = {
                 title: "Licencia mensual franciscososa.net",
@@ -48,32 +49,75 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url:  "https://2e94-2800-810-548-8427-a9ee-20df-9013-cc03.ngrok.io/webhook",
+        notification_url:  "https://922a-2800-810-548-6dd-3191-db3-fef0-cdac.ngrok.io/webhook",
         // `http://localhost:${PORT}/webhook` -> notification url
     });
 
-    console.log(result);
+    // console.log(result);
 
     res.send(result.body);
 }
 
 export const receiveWebhook = async(req, res) => {
-
-    console.log(req.query);
-
     const payment = req.query;
 
     try{
-
         if(payment.type === "payment"){
-            const data = await mercadopago.payment.findById(payment['data.id']);
-            console.log(data);
 
-            //aca capturar toda la data del comprador
-            // aca guardaria en la base de datos toda la data
+            const data = await mercadopago.payment.findById(payment['data.id']);
+
+            if(data.body.status === "approved"){
+
+                console.log("Pago aprobado"); // Procesar pagos aprobados
+
+                console.log(data);
+
+                const newTransaction = new Transaction({
+                    transactionId: data.body.id,
+                    platform: 'mercadopago',
+                    purchaseDate: new Date(data.body.date_created),
+                    buyer: {
+                        firstName: data.body.payer.first_name || 'N/A',
+                        lastName: data.body.payer.last_name || 'N/A',
+                        email: data.body.payer.email,
+                        phoneNumber: data.body.payer.phone.number || ''
+                    },
+                    product: {
+                        name: data.body.description,
+                        description: '',
+                        productId: data.body.order.id,
+                        price: data.body.transaction_amount,
+                        currency: data.body.currency_id,
+                        expirationDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+                    },
+                    status: data.body.status,
+                    paymentMethod: data.body.payment_type_id,
+                    paymentDetails: {
+                        transactionNumber: data.body.id,
+                    }
+                });
+
+                await newTransaction.save();
+                console.log('Transacción guardada con éxito en la base de datos');
+                console.log(newTransaction);
+
+            }else if(data.body.status === "rejected"){ //Procesar pagos rechazados
+                console.log("Pago rechazado");
+            }else if( data.body.status === 'in_process'){
+                console.log("Pago en proceso");
+            }else if(data.body.status === 'undefined'){
+                console.log("data.body.status = undefined");
+            }else{ //Procesar otros estados de pago
+                console.log("Estado de pago no reconocido:", data.body.status);
+            }
+
+        }else if(payment.type === "merchant_order"){ //Procesar webhooks de tipo merchant_order
+            console.log("Webhook de tipo merchant_order recibido");
+        }else{//Procesar otros tipos de webhooks
+            console.log("Tipo de webhook no reconocido:", payment.type);
         }
-        res.sendStatus(204);
-    }catch(error){
+
+    } catch(error){
         console.log(error);
         return res.sendStatus(500).json({error: error.message });
     }

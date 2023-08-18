@@ -2,14 +2,20 @@ import mercadopago from "mercadopago";
 import { MERCADOPAGO_API_KEY} from "../mercadopago/mercadopago.config.js";
 import { HOST } from '../../config.js'
 import Transaction from "../../models/transaction.model.js";
+import sendEmail from "../../public/js/enviarMail.js";
+
+let _email = "";
 
 export const createOrder = async(req, res) => {
-    
     mercadopago.configure({
         access_token: MERCADOPAGO_API_KEY
     });
-
+    
+    const email = req.body.email;
     const product = req.body.product; // Obtener el producto desde el cuerpo de la solicitud
+    _email = email;
+
+    console.log(_email);
 
     let item;
 
@@ -49,16 +55,14 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url:  "https://922a-2800-810-548-6dd-3191-db3-fef0-cdac.ngrok.io/webhook",
-        // `http://localhost:${PORT}/webhook` -> notification url
+        notification_url:  "https://678d-2800-810-548-6dd-6132-d0e0-a35f-69f7.ngrok.io/webhook",
     });
-
-    // console.log(result);
 
     res.send(result.body);
 }
 
 export const receiveWebhook = async(req, res) => {
+
     const payment = req.query;
 
     try{
@@ -66,11 +70,11 @@ export const receiveWebhook = async(req, res) => {
 
             const data = await mercadopago.payment.findById(payment['data.id']);
 
+            console.log(_email);
+
             if(data.body.status === "approved"){
 
                 console.log("Pago aprobado"); // Procesar pagos aprobados
-
-                console.log(data);
 
                 const newTransaction = new Transaction({
                     transactionId: data.body.id,
@@ -99,7 +103,14 @@ export const receiveWebhook = async(req, res) => {
 
                 await newTransaction.save();
                 console.log('Transacción guardada con éxito en la base de datos');
-                console.log(newTransaction);
+
+                //Enviar correo electronico al comprador
+                try{
+                    await sendEmail(_email);
+                }catch (error) {
+                    console.log(error);
+                    // return res.sendStatus(500).json({error: error.message });
+                }
 
             }else if(data.body.status === "rejected"){ //Procesar pagos rechazados
                 console.log("Pago rechazado");
@@ -119,6 +130,6 @@ export const receiveWebhook = async(req, res) => {
 
     } catch(error){
         console.log(error);
-        return res.sendStatus(500).json({error: error.message });
+        // return res.sendStatus(500).json({error: error.message });
     }
 }

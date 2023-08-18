@@ -24,7 +24,6 @@ app.use(mercadopagoPaymentRoutes);
 app.use(paypalPaymentRoutes);
 app.use(express.static(path.resolve('src/public')));
 
+
 app.listen(PORT);
 console.log('Servidor en puerto', PORT);
-
-

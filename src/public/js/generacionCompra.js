@@ -34,7 +34,7 @@ async function handleCheckout(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ product }) // Enviar el producto seleccionado al servidor
+            body: JSON.stringify({ product, email: emailInput.value }) // Enviar el producto seleccionado al servidor
         });
 
         if (!response.ok) {
@@ -52,7 +52,7 @@ async function handleCheckout(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ product }) // Enviar el producto seleccionado al servidor
+            body: JSON.stringify({ product, email: emailInput.value }) // Enviar el producto seleccionado al servidor
         });
 
         if (!response.ok) {
@@ -82,3 +82,4 @@ document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
 document.querySelectorAll('button[data-product]').forEach(button => {
     button.addEventListener('click', handleCheckout);
 });
+

@@ -4,18 +4,18 @@ import { HOST } from '../../config.js'
 import Transaction from "../../models/transaction.model.js";
 import sendEmail from "../../public/js/enviarMail.js";
 
-let _email = "";
+let _email = null;
 
 export const createOrder = async(req, res) => {
+
     mercadopago.configure({
         access_token: MERCADOPAGO_API_KEY
     });
     
-    const email = req.body.email;
-    const product = req.body.product; // Obtener el producto desde el cuerpo de la solicitud
-    _email = email;
+    const email = req.body.email; //Obtener el email desde el cuerpo de la solicitud
+    const product = req.body.product; //Obtener el producto desde el cuerpo de la solicitud
 
-    console.log(_email);
+    _email = email;
 
     let item;
 
@@ -49,13 +49,13 @@ export const createOrder = async(req, res) => {
     }
 
     const result = await mercadopago.preferences.create({
-        items: [item], // Usamos el producto seleccionado
+        items: [item], //Producto seleccionado
         back_urls: {
             success: `${HOST}/success`,
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url:  "https://678d-2800-810-548-6dd-6132-d0e0-a35f-69f7.ngrok.io/webhook",
+        notification_url:  "https://ea24-2800-810-548-6dd-19f5-bc2-30c9-5cca.ngrok.io/webhook",
     });
 
     res.send(result.body);
@@ -70,21 +70,23 @@ export const receiveWebhook = async(req, res) => {
 
             const data = await mercadopago.payment.findById(payment['data.id']);
 
-            console.log(_email);
-
             if(data.body.status === "approved"){
 
                 console.log("Pago aprobado"); // Procesar pagos aprobados
 
                 const newTransaction = new Transaction({
+
                     transactionId: data.body.id,
                     platform: 'mercadopago',
-                    purchaseDate: new Date(data.body.date_created),
+                    purchaseDate: formatPurchaseDate(data.body.date_created),
+                    currency: data.body.currency_id,
                     buyer: {
                         firstName: data.body.payer.first_name || 'N/A',
                         lastName: data.body.payer.last_name || 'N/A',
-                        email: data.body.payer.email,
-                        phoneNumber: data.body.payer.phone.number || ''
+                        email: data.body.payer.email || 'N/A',
+                        phoneNumber: data.body.payer.phone.number || 'N/A',
+                        id: data.body.payer.id,
+                        ip: data.body.payer.ip || 'N/A',
                     },
                     product: {
                         name: data.body.description,
@@ -106,7 +108,7 @@ export const receiveWebhook = async(req, res) => {
 
                 //Enviar correo electronico al comprador
                 try{
-                    await sendEmail(_email);
+                    await sendEmail(_email, newTransaction);
                 }catch (error) {
                     console.log(error);
                     // return res.sendStatus(500).json({error: error.message });
@@ -132,4 +134,18 @@ export const receiveWebhook = async(req, res) => {
         console.log(error);
         // return res.sendStatus(500).json({error: error.message });
     }
+}
+
+function formatPurchaseDate(date){
+
+    const dateObj = new Date(date);
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const year = dateObj.getFullYear();
+    const hours = String(dateObj.getHours()).padStart(2, '0');
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+    const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+    const ampm = dateObj.getHours() >= 12 ? 'PM' : 'AM';
+
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
 }

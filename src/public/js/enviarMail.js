@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 import { MAIL_HOST, MAIL_PORT, MAIL_USER, MAIL_NICKNAME, MAIL_PASS } from '../../config.js';
 
-async function sendEmail(toEmail){
+async function sendEmail(toEmail, transaction){
 
     const transporter = nodemailer.createTransport({
         host: MAIL_HOST,
@@ -13,6 +13,14 @@ async function sendEmail(toEmail){
         }
     });
 
+    const buyerNameComplete = `${transaction.buyer.firstName} ${transaction.buyer.lastName}`;
+    const licenseSerial = `AAAA-BBBB-CCCC-DDDD`;
+    const product = `${transaction.product.name.replace(" franciscososa.net", "")}`;
+    const amount = `${transaction.product.price} (${transaction.currency})`;
+    const date = `${transaction.purchaseDate}`;
+    const platform = `${transaction.platform.charAt(0).toUpperCase() + transaction.platform.slice(1)}`;
+    const transactionId = `${transaction.transactionId}`;
+
     const mailOptions = {
 
         from: `${MAIL_NICKNAME} <${MAIL_USER}>`,
@@ -20,44 +28,29 @@ async function sendEmail(toEmail){
         subject: 'Confirmación de tu compra y detalles de la licencia',
         html: `
 
-        <head>
-            <style>
-                .button {
-                    background-color: #4CAF50; /* Color de fondo del botón */
-                    border: none; /* Sin bordes */
-                    color: white; /* Color del texto */
-                    padding: 12px 24px; /* Espaciado interior del botón */
-                    text-align: center; /* Alineación del texto */
-                    text-decoration: none; /* Sin subrayado en el texto */
-                    display: inline-block; /* Display como bloque en línea */
-                    font-size: 16px; /* Tamaño de fuente */
-                    margin: 4px 2px; /* Márgenes exteriores del botón */
-                    cursor: pointer; /* Cambiar cursor a puntero al pasar por encima */
-                    border-radius: 12px; /* Bordes redondeados */
-                }
-            </style>
-        </head>
         <body>
             <div style="text-align: center;">
-            <img src="https://i.imgur.com/bsxympw.png" alt="Encabezado" style="width: 1000px;"/>
+            <img src="https://i.imgur.com/xUGprv9.png" alt="Encabezado" style="width: 100%;"/>
             </div>
-            <h1>¡Gracias por tu compra!</h1>
-            <p>Hola NOMBRE,</p>
+            <h1>¡Adquiriste una <b>${product}</b>!</h1>
+            <p>Hola ${buyerNameComplete},</p>
             <p>Es un placer informarte que tu compra se ha procesado exitosamente. ¡Te damos la bienvenida!</p>
+            <p>El código de tu licencia es:</p>
+            <p><b>${licenseSerial}</b></p>
+            <hr />
             <p>Detalles de la transacción:</p>
             <ul>
-                <li>Producto adquirido: PRODUCTO</li>
-                <li>Monto: MONTO</li>
-                <li>Fecha de compra: FECHA</li>
-                <li>Medio de pago: MEDIO DE PAGO</li>
-                <li>Destinatario: DESTINATARIO</li>
-                <li>Número de comprobante: ID DE TRANSACCION</li>
+                <li>Producto adquirido: "${product}"</li>
+                <li>Monto: ${amount}</li>
+                <li>Fecha de compra: ${date}</li>
+                <li>Medio de pago: ${platform}</li>
+                <li>Número de comprobante: ${transactionId}</li>
             </ul>
-            <p>Hemos generado este mail de manera automática. Si tienes alguna pregunta o necesitas asistencia, nuestro equipo de atención al cliente está aquí para ayudarte. No dudes en ponerte en contacto con nosotros haciendo clic en el siguiente enlace:</p>
-            <a href="https://franciscososa.net/support" class="button">Botón de enlace de soporte</a>
-            <p>Recuerda que estamos aquí para brindarte el mejor servicio posible. ¡Gracias por elegirnos como tu proveedor de licencias!</p>
+            <hr />
+            <p>Este email fue generado automáticamente. Si tienes alguna pregunta o necesitas asistencia, nuestro equipo de <a href="https://franciscososa.net/#contacto">atención al cliente</a> está aquí para ayudarte. No dudes en ponerte en contacto con nosotros.</p>
+            <p>Recuerda que estamos aquí para brindarte el mejor servicio posible. ¡Gracias por elegirnos como tu proveedor de software!</p>
             <p>Atentamente,</p>
-            <p>El equipo de Ventas de Franciscososa.net</p>
+            <p>El equipo de Ventas de <a href="https://franciscososa.net">FRANCISCOSOSA.NET</a></p>
         </body>
         `
     };

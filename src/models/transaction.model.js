@@ -1,15 +1,18 @@
 import mongoose from 'mongoose';
 
 const transactionSchema = new mongoose.Schema({
+
     transactionId: String,
     platform: String,
-    purchaseDate: Date,
+    purchaseDate: String,
+    currency: String,
     buyer: {
         firstName: String,
         lastName: String,
         email: String,
-        address: String,
-        phoneNumber: String
+        phoneNumber: String,
+        id: String,
+        ip: String,
     },
     product: {
         name: String,

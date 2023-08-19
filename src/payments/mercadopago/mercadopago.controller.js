@@ -2,7 +2,9 @@ import mercadopago from "mercadopago";
 import { MERCADOPAGO_API_KEY} from "../mercadopago/mercadopago.config.js";
 import { HOST } from '../../config.js'
 import Transaction from "../../models/transaction.model.js";
+import License from "../../models/license.model.js";
 import sendEmail from "../../public/js/enviarMail.js";
+import generateLicenseKey from "../../public/js/generacionLicencia.js"
 
 let _email = null;
 
@@ -55,7 +57,7 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url:  "https://ea24-2800-810-548-6dd-19f5-bc2-30c9-5cca.ngrok.io/webhook",
+        notification_url:  "https://cf95-2800-810-548-6dd-19f5-bc2-30c9-5cca.ngrok.io/webhook",
     });
 
     res.send(result.body);
@@ -72,8 +74,47 @@ export const receiveWebhook = async(req, res) => {
 
             if(data.body.status === "approved"){
 
-                console.log("Pago aprobado"); // Procesar pagos aprobados
+                //1) Generar una licencia
+                const licenseKey = generateLicenseKey();
 
+                    //1.1) Calcular la fecha de expiracion de la licencia
+                    const expirationDate = calculateExpirationDate(formatPurchaseDate(data.body.date_created), data.body.description);
+                    console.log(expirationDate);
+
+                //2) Crear instancia de License
+                const newLicense = new License({
+                    licenseKey: licenseKey,
+                    transactionId: data.body.id,
+                    platform: 'mercadopago',
+                    purchaseDate: formatPurchaseDate(data.body.date_created),
+                    expirationDate: expirationDate,
+                    currency: data.body.currency_id,
+                    buyer: {
+                        firstName: data.body.payer.first_name || 'N/A',
+                        lastName: data.body.payer.last_name || 'N/A',
+                        email: data.body.payer.email || 'N/A',
+                        phoneNumber: data.body.payer.phone.number || 'N/A',
+                        id: data.body.payer.id,
+                        ip: data.body.payer.ip || 'N/A',
+                    },
+                    product: {
+                        name: data.body.description,
+                        description: '',
+                        productId: data.body.order.id,
+                        price: data.body.transaction_amount,
+                        currency: data.body.currency_id,
+                    },
+                    status: data.body.status,
+                    paymentMethod: data.body.payment_type_id,
+                    paymentDetails: {
+                        transactionNumber: data.body.id,
+                    }
+                });
+
+                //3) Guardar la nueva licencia en la base de datos
+                await newLicense.save();
+
+                //4) Crear una nueva instancia de Transaction
                 const newTransaction = new Transaction({
 
                     transactionId: data.body.id,
@@ -103,12 +144,14 @@ export const receiveWebhook = async(req, res) => {
                     }
                 });
 
+                //5) Guardar la nueva transaccion en la base de datos
                 await newTransaction.save();
                 console.log('Transacción guardada con éxito en la base de datos');
 
-                //Enviar correo electronico al comprador
+                //6) Enviar correo electronico al comprador
                 try{
-                    await sendEmail(_email, newTransaction);
+                    await sendEmail(_email, newTransaction, licenseKey);
+                    console.log("PAGO APROBADO");
                 }catch (error) {
                     console.log(error);
                     // return res.sendStatus(500).json({error: error.message });
@@ -126,7 +169,7 @@ export const receiveWebhook = async(req, res) => {
 
         }else if(payment.type === "merchant_order"){ //Procesar webhooks de tipo merchant_order
             console.log("Webhook de tipo merchant_order recibido");
-        }else{//Procesar otros tipos de webhooks
+        }else{ //Procesar otros tipos de webhooks
             console.log("Tipo de webhook no reconocido:", payment.type);
         }
 
@@ -137,7 +180,6 @@ export const receiveWebhook = async(req, res) => {
 }
 
 function formatPurchaseDate(date){
-
     const dateObj = new Date(date);
     const day = String(dateObj.getDate()).padStart(2, '0');
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -148,4 +190,33 @@ function formatPurchaseDate(date){
     const ampm = dateObj.getHours() >= 12 ? 'PM' : 'AM';
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+}
+
+function calculateExpirationDate(purchaseDate, productName) {
+    const [datePart, timePart, ampm] = purchaseDate.split(' ');
+    const [day, month, year] = datePart.split('/').map(Number);
+    const [hours, minutes, seconds] = timePart.split(':').map(Number);
+    const dateObj = new Date(year, month - 1, day, hours % 12 + (ampm === 'PM' ? 12 : 0), minutes, seconds);
+
+    const lowerCaseProductName = productName.toLowerCase();
+
+    if (lowerCaseProductName.includes("licencia mensual")) {
+        dateObj.setMonth(dateObj.getMonth() + 1);
+    } else if (lowerCaseProductName.includes("licencia semestral")) {
+        dateObj.setMonth(dateObj.getMonth() + 6);
+    } else if (lowerCaseProductName.includes("licencia anual")) {
+        dateObj.setFullYear(dateObj.getFullYear() + 1);
+    }
+
+    const dayStr = String(dateObj.getDate()).padStart(2, '0');
+    const monthStr = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const yearStr = dateObj.getFullYear();
+    const hoursStr = String(dateObj.getHours() % 12).padStart(2, '0');
+    const minutesStr = String(dateObj.getMinutes()).padStart(2, '0');
+    const secondsStr = String(dateObj.getSeconds()).padStart(2, '0');
+    const ampmStr = dateObj.getHours() >= 12 ? 'PM' : 'AM';
+
+    const expirationDate = `${dayStr}/${monthStr}/${yearStr} ${hoursStr}:${minutesStr}:${secondsStr} ${ampmStr}`;
+
+    return expirationDate;
 }

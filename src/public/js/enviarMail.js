@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 import { MAIL_HOST, MAIL_PORT, MAIL_USER, MAIL_NICKNAME, MAIL_PASS } from '../../config.js';
 
-async function sendEmail(toEmail, transaction){
+async function sendEmail(toEmail, transaction, licenseKey){
 
     const transporter = nodemailer.createTransport({
         host: MAIL_HOST,
@@ -14,7 +14,6 @@ async function sendEmail(toEmail, transaction){
     });
 
     const buyerNameComplete = `${transaction.buyer.firstName} ${transaction.buyer.lastName}`;
-    const licenseSerial = `AAAA-BBBB-CCCC-DDDD`;
     const product = `${transaction.product.name.replace(" franciscososa.net", "")}`;
     const amount = `${transaction.product.price} (${transaction.currency})`;
     const date = `${transaction.purchaseDate}`;
@@ -32,11 +31,10 @@ async function sendEmail(toEmail, transaction){
             <div style="text-align: center;">
             <img src="https://i.imgur.com/xUGprv9.png" alt="Encabezado" style="width: 100%;"/>
             </div>
-            <h1>¡Adquiriste una <b>${product}</b>!</h1>
+            <h1>¡Adquiriste una <b>${product.toLowerCase()}</b>!</h1>
             <p>Hola ${buyerNameComplete},</p>
             <p>Es un placer informarte que tu compra se ha procesado exitosamente. ¡Te damos la bienvenida!</p>
-            <p>El código de tu licencia es:</p>
-            <p><b>${licenseSerial}</b></p>
+            <p>El código de tu licencia es:<br/><b>${licenseKey}</b></p>
             <hr />
             <p>Detalles de la transacción:</p>
             <ul>
@@ -48,7 +46,7 @@ async function sendEmail(toEmail, transaction){
             </ul>
             <hr />
             <p>Este email fue generado automáticamente. Si tienes alguna pregunta o necesitas asistencia, nuestro equipo de <a href="https://franciscososa.net/#contacto">atención al cliente</a> está aquí para ayudarte. No dudes en ponerte en contacto con nosotros.</p>
-            <p>Recuerda que estamos aquí para brindarte el mejor servicio posible. ¡Gracias por elegirnos como tu proveedor de software!</p>
+            <p>Recuerda que estamos aquí para brindarte el mejor servicio posible.<br />¡Gracias por elegirnos como tu proveedor de software!</p>
             <p>Atentamente,</p>
             <p>El equipo de Ventas de <a href="https://franciscososa.net">FRANCISCOSOSA.NET</a></p>
         </body>

@@ -57,7 +57,7 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url:  "https://cdf0-190-55-206-59.ngrok.io/webhook",
+        notification_url: "https://cdf0-190-55-206-59.ngrok.io/webhook",
     });
 
     res.send(result.body);
@@ -69,6 +69,10 @@ export const receiveWebhook = async(req, res) => {
 
     try{
         if(payment.type === "payment"){
+
+            res.sendStatus(200);
+            console.log('Webhook recibido:', payment.type);
+            console.log("PAYMENT COMPLETO ES..." + payment);
 
             const data = await mercadopago.payment.findById(payment['data.id']);
 

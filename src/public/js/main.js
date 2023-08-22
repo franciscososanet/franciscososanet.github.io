@@ -41,7 +41,8 @@ let modal = function(modalClick){
 };
 
 modalBtns.forEach((modalBtn, i) => {
-    modalBtn.addEventListener('click', () => {
+    modalBtn.addEventListener('click', (event) => {
+        event.preventDefault();
         modal(i);
     });
 });

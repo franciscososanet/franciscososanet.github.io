@@ -4,7 +4,7 @@ import { HOST } from '../../config.js'
 import Transaction from "../../models/transaction.model.js";
 import License from "../../models/license.model.js";
 import sendEmail from "../../public/js/enviarMail.js";
-import generateLicenseKey from "../../public/js/generacionLicencia.js"
+import generateUniqueLicenseKey from "../../public/js/generacionLicencia.js";
 
 let _email = null;
 
@@ -57,7 +57,7 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url:  "https://cf95-2800-810-548-6dd-19f5-bc2-30c9-5cca.ngrok.io/webhook",
+        notification_url:  "https://cdf0-190-55-206-59.ngrok.io/webhook",
     });
 
     res.send(result.body);
@@ -75,7 +75,7 @@ export const receiveWebhook = async(req, res) => {
             if(data.body.status === "approved"){
 
                 //1) Generar una licencia
-                const licenseKey = generateLicenseKey();
+                const licenseKey = await generateUniqueLicenseKey();
 
                     //1.1) Calcular la fecha de expiracion de la licencia
                     const expirationDate = calculateExpirationDate(formatPurchaseDate(data.body.date_created), data.body.description);
@@ -180,6 +180,7 @@ export const receiveWebhook = async(req, res) => {
 }
 
 function formatPurchaseDate(date){
+
     const dateObj = new Date(date);
     const day = String(dateObj.getDate()).padStart(2, '0');
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -192,7 +193,8 @@ function formatPurchaseDate(date){
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
 }
 
-function calculateExpirationDate(purchaseDate, productName) {
+function calculateExpirationDate(purchaseDate, productName){
+
     const [datePart, timePart, ampm] = purchaseDate.split(' ');
     const [day, month, year] = datePart.split('/').map(Number);
     const [hours, minutes, seconds] = timePart.split(':').map(Number);
@@ -200,11 +202,11 @@ function calculateExpirationDate(purchaseDate, productName) {
 
     const lowerCaseProductName = productName.toLowerCase();
 
-    if (lowerCaseProductName.includes("licencia mensual")) {
+    if(lowerCaseProductName.includes("licencia mensual")){
         dateObj.setMonth(dateObj.getMonth() + 1);
-    } else if (lowerCaseProductName.includes("licencia semestral")) {
+    }else if(lowerCaseProductName.includes("licencia semestral")){
         dateObj.setMonth(dateObj.getMonth() + 6);
-    } else if (lowerCaseProductName.includes("licencia anual")) {
+    }else if(lowerCaseProductName.includes("licencia anual")){
         dateObj.setFullYear(dateObj.getFullYear() + 1);
     }
 

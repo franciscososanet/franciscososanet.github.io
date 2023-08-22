@@ -3,8 +3,8 @@ import { MERCADOPAGO_API_KEY} from "../mercadopago/mercadopago.config.js";
 import { HOST } from '../../config.js'
 import Transaction from "../../models/transaction.model.js";
 import License from "../../models/license.model.js";
-import sendEmail from "../../public/js/enviarMail.js";
-import generateUniqueLicenseKey from "../../public/js/generacionLicencia.js";
+import sendEmailPurchase from "../../services/email/mailCompra.js";
+import generateUniqueLicenseKey from "../../services/purchase/generacionLicencia.js";
 
 let _email = null;
 
@@ -57,7 +57,7 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url: "https://cdf0-190-55-206-59.ngrok.io/webhook",
+        notification_url: "https://af3a-2800-810-548-6dd-ed58-44a8-6fc-ae92.ngrok.io/webhook",
     });
 
     res.send(result.body);
@@ -71,8 +71,6 @@ export const receiveWebhook = async(req, res) => {
         if(payment.type === "payment"){
 
             res.sendStatus(200);
-            console.log('Webhook recibido:', payment.type);
-            console.log("PAYMENT COMPLETO ES..." + payment);
 
             const data = await mercadopago.payment.findById(payment['data.id']);
 
@@ -154,7 +152,7 @@ export const receiveWebhook = async(req, res) => {
 
                 //6) Enviar correo electronico al comprador
                 try{
-                    await sendEmail(_email, newTransaction, licenseKey);
+                    await sendEmailPurchase(_email, newTransaction, licenseKey);
                     console.log("PAGO APROBADO");
                 }catch (error) {
                     console.log(error);

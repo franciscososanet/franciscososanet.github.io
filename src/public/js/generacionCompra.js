@@ -82,4 +82,3 @@ document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
 document.querySelectorAll('button[data-product]').forEach(button => {
     button.addEventListener('click', handleCheckout);
 });
-

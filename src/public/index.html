@@ -507,55 +507,57 @@
         </section>
 
         <!--==================== CONTACT ME ====================-->
-        <section class="contact section" id="contacto">
-            <h2 class="section__title">Contacto</h2>
-            <span class="section__subtitle">Consultas, contrataciones y presupuestos</span>
+<section class="contact section" id="contacto">
+    <h2 class="section__title">Contacto</h2>
+    <span class="section__subtitle">Consultas, contrataciones y presupuestos</span>
 
-            <div class="contact__container container grid">
+    <div class="contact__container container grid">
+        <div>
+            <div class="contact__information">
+                <i class="uil uil-envelope contact__icon"></i>
                 <div>
-                    <div class="contact__information">
-                        <i class="uil uil-envelope contact__icon"></i>
-                        <div>
-                            <h3 class="contact__title">Email</h3>
-                            <span class="contact__subtitle">contacto@franciscososa.net</span>
-                        </div>
-                    </div>
-
-                    <div class="contact__information">
-                        <i class="uil uil-map-marker contact__icon"></i>
-                        <div>
-                            <h3 class="contact__title">Ubicación</h3>
-                            <span class="contact__subtitle">Buenos Aires, Argentina</span>
-                        </div>
-                    </div>           
+                    <h3 class="contact__title">Email</h3>
+                    <span class="contact__subtitle">contacto@franciscososa.net</span>
                 </div>
-
-                <form action="" class="contact__form grid" id="form">
-                    <div class="contact__inputs grid">
-                        <div class="contact__content">
-                            <label for="" class="contact__label">Nombre</label>
-                            <input type="text" placeholder="Tu nombre..." class="contact__input" name="name" required>
-                        </div>
-                        <div class="contact__content">
-                            <label for="" class="contact__label">Email</label>
-                            <input type="email" placeholder="Tu email..." class="contact__input" name="email" required>
-                        </div>
-                    </div>
-                    <div class="contact__content">
-                        <label for="" class="contact__label">Título</label>
-                        <input type="text" placeholder="Título..." class="contact__input" name="title" required>
-                    </div>
-                    <div class="contact__content">
-                        <label for="" class="contact__label">Mensaje</label>
-                        <textarea name="message" placeholder="Tu mensaje..." id="" cols="0" rows="7" class="contact__input" required></textarea>
-                    </div>
-                    <div>
-                        <input type="submit" class="button button--flex" id="form-btn" value="Enviar mensaje"
-                            style="border: none; font-family: Poppins; font-weight: var(--font-medium); cursor: pointer;">
-                    </div>
-                </form>
             </div>
-        </section>
+
+            <div class="contact__information">
+                <i class="uil uil-map-marker contact__icon"></i>
+                <div>
+                    <h3 class="contact__title">Ubicación</h3>
+                    <span class="contact__subtitle">Buenos Aires, Argentina</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de contacto -->
+        <form class="contact__form grid" id="formcontacto">
+            <div class="contact__inputs grid">
+                <div class="contact__content">
+                    <label for="" class="contact__label">Nombre</label>
+                    <input type="text" placeholder="Tu nombre..." class="contact__input" name="name" required>
+                </div>
+                <div class="contact__content">
+                    <label for="" class="contact__label">Email</label>
+                    <input type="email" placeholder="Tu email..." class="contact__input" name="email" required>
+                </div>
+            </div>
+            <div class="contact__content">
+                <label for="" class="contact__label">Título</label>
+                <input type="text" placeholder="Título..." class="contact__input" name="title" required>
+            </div>
+            <div class="contact__content">
+                <label for="" class="contact__label">Mensaje</label>
+                <textarea name="message" placeholder="Tu mensaje..." id="" cols="0" rows="7" class="contact__input" required></textarea>
+            </div>
+            <div>
+                <input type="submit" class="button button--flex" id="form-btn" value="Enviar mensaje"
+                    style="border: none; font-family: Poppins; font-weight: var(--font-medium); cursor: pointer;">
+            </div>
+        </form>
+    </div>
+
+</section>
 
     </main>
 
@@ -601,7 +603,7 @@
     <script src="./js/main.js"></script>
 
     <!--=============== FORMULARIO CONTACTO ===============-->
-    <script src="./js/formularioContacto.js"></script>
+    <script src="./js/generacionEmailContacto.js"></script>
 
 </body>
 

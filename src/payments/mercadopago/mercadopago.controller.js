@@ -57,7 +57,7 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url: "https://af3a-2800-810-548-6dd-ed58-44a8-6fc-ae92.ngrok.io/webhook",
+        notification_url: "https://8eb2-2800-810-548-6dd-1f3-42e5-4328-9023.ngrok.io/webhook",
     });
 
     res.send(result.body);

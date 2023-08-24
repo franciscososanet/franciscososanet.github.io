@@ -5,6 +5,7 @@ import { MAIL_HOST, MAIL_PORT, MAIL_USER, MAIL_PASS } from "../../config.js";
 const router = express.Router();
 
 router.post('/sendEmail', async (req, res) => {
+
     const { name, email, title, message } = req.body;
 
     const transporter = nodemailer.createTransport({
@@ -36,11 +37,11 @@ router.post('/sendEmail', async (req, res) => {
         `
     };
 
-    try {
+    try{
         const info = await transporter.sendMail(mailOptions);
         console.log('EMAIL CORRECTAMENTE ENVIADO:', info.response);
         res.status(200).send({ message: 'Correo enviado con éxito.' });
-    } catch (error) {
+    }catch (error) {
         console.error('ERROR AL ENVIAR EL EMAIL:', error);
         res.status(500).send({ message: 'Error al enviar el correo.' });
     }

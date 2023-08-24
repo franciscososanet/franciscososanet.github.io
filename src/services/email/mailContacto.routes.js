@@ -18,6 +18,8 @@ router.post('/sendEmail', async (req, res) => {
         }
     });
 
+    const formattedMeesage = message.replace(/\n/g, '<br>'); //Para que a la casilla de correo se respeten los saltos de linea
+
     const mailOptions = {
         from: `${name} <${email}>`,
         to: 'contacto@franciscososa.net',
@@ -31,7 +33,7 @@ router.post('/sendEmail', async (req, res) => {
                 </li>
                 <hr />
                 <h2>${title}</h2>
-                <p>${message}</p>
+                <p>${formattedMeesage}</p>
                 <hr />
             </body>
         `

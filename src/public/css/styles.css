@@ -807,7 +807,7 @@ img{
   /* .about__container, */
   .skills__container,
   .portfolio__content,
-  /* .project__container, */
+  .project__container,
   .contact__container,
   .footer__container{
     grid-template-columns: repeat(2, 1fr);
@@ -1211,3 +1211,16 @@ img{
   font-size: 1.2rem;
   margin-bottom: 20px;
 }
+
+/* COMPRAEXITOSA.HTML */
+#mensaje-compra-exitosa {
+  text-align: left;
+  color: var(--title-color);
+}
+
+#mensaje-compra-exitosa a {
+  text-decoration: underline;
+  color: var(--title-color);
+}
+
+

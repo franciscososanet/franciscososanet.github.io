@@ -53,11 +53,11 @@ export const createOrder = async(req, res) => {
     const result = await mercadopago.preferences.create({
         items: [item], //Producto seleccionado
         back_urls: {
-            success: `${HOST}/success`,
+            success: `${HOST}/compraexitosa.html?email=${email}&product=${item.title}`,
             failure: `${HOST}/licencias.html`,
             pending: `${HOST}/pending`
         },
-        notification_url: "https://8e50-2800-810-548-6dd-1f3-42e5-4328-9023.ngrok.io/webhook",
+        notification_url: "https://8b6e-2800-810-548-8427-9d2e-cd39-43ef-ced1.ngrok.io/webhook",
     });
 
     res.send(result.body);
@@ -177,7 +177,7 @@ export const receiveWebhook = async(req, res) => {
 
     } catch(error){
         console.log(error);
-        // return res.sendStatus(500).json({error: error.message });
+        return res.sendStatus(500).json({error: error.message });
     }
 }
 

@@ -54,10 +54,10 @@ export const createOrder = async(req, res) => {
         items: [item], //Producto seleccionado
         back_urls: {
             success: `${HOST}/compraexitosa.html?email=${email}&product=${item.title}`,
-            failure: `${HOST}/licencias.html`,
-            pending: `${HOST}/pending`
+            failure: `${HOST}/comprarechazada.html?email=${email}&product=${item.title}`,
+            pending: `${HOST}/compraenproceso.html?email=${email}&product=${item.title}`,
         },
-        notification_url: "https://8b6e-2800-810-548-8427-9d2e-cd39-43ef-ced1.ngrok.io/webhook",
+        notification_url: "https://1089-2800-810-548-8427-fd4c-6cf7-a3f5-d39d.ngrok.io/webhook",
     });
 
     res.send(result.body);

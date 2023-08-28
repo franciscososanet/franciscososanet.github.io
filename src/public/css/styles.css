@@ -1212,15 +1212,17 @@ img{
   margin-bottom: 20px;
 }
 
-/* COMPRAEXITOSA.HTML */
-#mensaje-compra-exitosa {
+/* COMPRAEXITOSA.HTML Y COMPRARECHAZADA.HTML */
+#mensaje-compra-exitosa,
+#mensaje-compra-rechzada,
+#mensaje-compra-enproceso {
   text-align: left;
   color: var(--title-color);
 }
 
-#mensaje-compra-exitosa a {
+#mensaje-compra-exitosa a,
+#mensaje-compra-rechazada a,
+#mensaje-compra-enproceso a {
   text-decoration: underline;
   color: var(--title-color);
 }
-
-

@@ -57,6 +57,9 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/comprarechazada.html?email=${email}&product=${item.title}`,
             pending: `${HOST}/compraenproceso.html?email=${email}&product=${item.title}`,
         },
+        payment_methods:{
+            installments: 1, //Solo permito el pago en 1 cuota
+        },
         notification_url: "https://df14-2800-810-548-8427-b4cf-4e30-f72e-ed3e.ngrok.io/webhook",
     });
 

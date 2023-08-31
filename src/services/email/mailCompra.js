@@ -62,23 +62,16 @@ async function sendEmailPurchase(toEmail, transaction, licenseKey){
     }
 }
 
-function getPaymentMethodStr(platform, method, typeId) {
-    if (method === 'account_money') {
-        return `${platform} (dinero en cuenta)`;
-    }
+function getPaymentMethodStr(platform, method, typeId){
+
+    if(method === 'account_money') return `${platform}`;
     
     let cardType = '';
 
     switch(typeId){
-        case 'credit_card':
-            cardType = 'Crédito';
-            break;
-        case 'debit_card':
-            cardType = 'Débito';
-            break;
-        default:
-            cardType = '';
-            break;
+        case 'credit_card': cardType = 'Crédito'; break;
+        case 'debit_card': cardType = 'Débito'; break;
+        default: cardType = ''; break;
     }
 
     return `${platform} (${cardType} ${method.toUpperCase()})`;

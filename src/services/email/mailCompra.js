@@ -19,6 +19,7 @@ async function sendEmailPurchase(toEmail, transaction, licenseKey){
     const date = `${transaction.purchaseDate}`;
     const platform = `${transaction.platform.charAt(0).toUpperCase() + transaction.platform.slice(1)}`;
     const transactionId = `${transaction.transactionId}`;
+    const paymentMethodStr = getPaymentMethodStr(platform, transaction.paymentMethod.method, transaction.paymentMethod.typeId);
 
     const mailOptions = {
 
@@ -41,7 +42,7 @@ async function sendEmailPurchase(toEmail, transaction, licenseKey){
                 <li>Producto adquirido: "${product}"</li>
                 <li>Monto: ${amount}</li>
                 <li>Fecha de compra: ${date}</li>
-                <li>Medio de pago: ${platform}</li>
+                <li>Medio de pago: ${paymentMethodStr}</li>
                 <li>Número de comprobante: ${transactionId}</li>
             </ul>
             <hr />
@@ -59,6 +60,28 @@ async function sendEmailPurchase(toEmail, transaction, licenseKey){
     }catch (error){
         console.error('ERROR AL ENVIAR EL EMAIL:', error);
     }
+}
+
+function getPaymentMethodStr(platform, method, typeId) {
+    if (method === 'account_money') {
+        return `${platform} (dinero en cuenta)`;
+    }
+    
+    let cardType = '';
+
+    switch(typeId){
+        case 'credit_card':
+            cardType = 'Crédito';
+            break;
+        case 'debit_card':
+            cardType = 'Débito';
+            break;
+        default:
+            cardType = '';
+            break;
+    }
+
+    return `${platform} (${cardType} ${method.toUpperCase()})`;
 }
 
 export default sendEmailPurchase;

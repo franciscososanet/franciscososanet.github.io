@@ -23,7 +23,10 @@ const transactionSchema = new mongoose.Schema({
         expirationDate: Date
     },
     status: String,
-    paymentMethod: String,
+    paymentMethod: {
+        method: String,
+        typeId: String,
+    },
     paymentDetails: {
         transactionNumber: String,
         fee: Number

@@ -57,7 +57,7 @@ export const createOrder = async(req, res) => {
             failure: `${HOST}/comprarechazada.html?email=${email}&product=${item.title}`,
             pending: `${HOST}/compraenproceso.html?email=${email}&product=${item.title}`,
         },
-        notification_url: "https://1089-2800-810-548-8427-fd4c-6cf7-a3f5-d39d.ngrok.io/webhook",
+        notification_url: "https://df14-2800-810-548-8427-b4cf-4e30-f72e-ed3e.ngrok.io/webhook",
     });
 
     res.send(result.body);
@@ -81,7 +81,6 @@ export const receiveWebhook = async(req, res) => {
 
                     //1.1) Calcular la fecha de expiracion de la licencia
                     const expirationDate = calculateExpirationDate(formatPurchaseDate(data.body.date_created), data.body.description);
-                    console.log(expirationDate);
 
                 //2) Crear instancia de License
                 const newLicense = new License({
@@ -97,7 +96,7 @@ export const receiveWebhook = async(req, res) => {
                         email: data.body.payer.email || 'N/A',
                         phoneNumber: data.body.payer.phone.number || 'N/A',
                         id: data.body.payer.id,
-                        ip: data.body.payer.ip || 'N/A',
+                        ip: data.body.additional_info.ip_address || 'N/A',
                     },
                     product: {
                         name: data.body.description,
@@ -129,7 +128,7 @@ export const receiveWebhook = async(req, res) => {
                         email: data.body.payer.email || 'N/A',
                         phoneNumber: data.body.payer.phone.number || 'N/A',
                         id: data.body.payer.id,
-                        ip: data.body.payer.ip || 'N/A',
+                        ip: data.body.additional_info.ip_address || 'N/A',
                     },
                     product: {
                         name: data.body.description,
@@ -140,7 +139,10 @@ export const receiveWebhook = async(req, res) => {
                         expirationDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                     },
                     status: data.body.status,
-                    paymentMethod: data.body.payment_type_id,
+                    paymentMethod: {
+                        method: data.body.payment_method_id,
+                        typeId: data.body.payment_type_id || 'N/A',
+                    }, 
                     paymentDetails: {
                         transactionNumber: data.body.id,
                     }

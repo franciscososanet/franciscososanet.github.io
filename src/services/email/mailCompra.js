@@ -64,6 +64,8 @@ async function sendEmailPurchase(toEmail, transaction, licenseKey){
 
 function getPaymentMethodStr(platform, method, typeId){
 
+    if(platform === 'Paypal') return platform;
+
     if(method === 'account_money') return `${platform}`;
     
     let cardType = '';

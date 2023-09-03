@@ -843,7 +843,7 @@ img{
   }
 
   .section__subtitle {
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
   }
 
   .header {
@@ -995,6 +995,7 @@ img{
 
   /* Reglas de los tablets y pantallas más grandes */
   .plan-container.plan-grid {
+
     flex-direction: row; 
     gap: 2rem; 
   }

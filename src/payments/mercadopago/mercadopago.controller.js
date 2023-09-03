@@ -60,7 +60,7 @@ export const createOrder = async(req, res) => {
         payment_methods:{
             installments: 1, //Solo permito el pago en 1 cuota
         },
-        notification_url: "https://df14-2800-810-548-8427-b4cf-4e30-f72e-ed3e.ngrok.io/webhook",
+        notification_url: "https://af26-2800-810-548-8427-fc73-8e41-e62c-1370.ngrok.io/webhook",
     });
 
     res.send(result.body);

@@ -92,16 +92,15 @@
                 <div class="services__modal">
                     <div class="services__modal-content">
                         <h4 class="services__modal-title">Licencia mensual</h4>
-                        <i class="uil uil-times services__modal-close"></i>
-                        <div>
+                        <i class="uil uil-times services__modal-close"></i><!-- Columna del formulario -->
+                        <div class="form-container">
                             <form id="purchaseForm">
                                 <div class="form-group">
-                                    <p>Introduce tu email, lo utilizarás para obtener tu licencia.</p>
-                                    <label for="email">Correo Electrónico:</label>
-                                    <input type="email" id="email" placeholder="ejemplo@dominio.com" required>
+                                    <label for="email" class="label-email"><strong>Correo electrónico</strong>:</label>
+                                    <input type="email" id="email" placeholder="Escribe tu dirección e-mail..." required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Método de Pago:</label>
+                                    <label class="label-metodopago"><strong>Método de pago</strong>:</label>
                                     <div>
                                         <input type="radio" id="paypal" name="paymentMethod" value="paypal" required>
                                         <label for="paypal">PayPal</label>
@@ -111,12 +110,21 @@
                                         <label for="mercadopago">MercadoPago</label>
                                     </div>
                                 </div>
-                                <button type="submit" id="checkoutMensual" data-product="checkoutMensual" disabled>Continuar</button>
                             </form>
                         </div>
-                        <div>
-                            <p>Segunda columna</p>
+                
+                        <!-- Columna de detalles de la compra -->
+                        <div class="purchase-details form-group">
+                            <p class="label-detalle"><strong>Resumen de transacción:</strong></p>
+                            <p>Producto: <span>Licencia mensual</span></p>
+                            <p>Subtotal: <span>$10.000,00</span></p>
+                            <p>Impuesto IVA: 21% <span>$2100,00</span></p>
+                            <p>Impuesto MercadoPago: 7% <span>$700,00</span></p>
+                            <hr><br>
+                            <p>Total: <strong><span>$12800,00</span></strong></p>
                         </div>
+
+                        <button type="submit" class="button button--flex" id="checkoutMensual" data-product="checkoutMensual" disabled>Crear orden de compra</button>
                     </div>
                 </div>
     
@@ -136,16 +144,15 @@
                 <div class="services__modal">
                     <div class="services__modal-content">
                         <h4 class="services__modal-title">Licencia anual</h4>
-                        <i class="uil uil-times services__modal-close"></i>
-                        <div>
+                        <i class="uil uil-times services__modal-close"></i><!-- Columna del formulario -->
+                        <div class="form-container">
                             <form id="purchaseForm">
                                 <div class="form-group">
-                                    <h1 class="section__subtitle">Introduce tu email, lo utilizarás para obtener tu licencia.</h1>
-                                    <label for="email">Correo Electrónico:</label>
-                                    <input type="email" id="email" placeholder="ejemplo@dominio.com" required>
+                                    <label for="email" class="label-email"><strong>Correo electrónico</strong>:</label>
+                                    <input type="email" id="email" placeholder="Escribe tu dirección e-mail..." required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Método de Pago:</label>
+                                    <label class="label-metodopago"><strong>Método de pago</strong>:</label>
                                     <div>
                                         <input type="radio" id="paypal" name="paymentMethod" value="paypal" required>
                                         <label for="paypal">PayPal</label>
@@ -155,12 +162,21 @@
                                         <label for="mercadopago">MercadoPago</label>
                                     </div>
                                 </div>
-                                <button type="submit" id="checkoutAnual" data-product="checkoutAnual" disabled>Continuar</button>
                             </form>
                         </div>
-                        <div>
-                            <p>Segunda columna</p>
+                
+                        <!-- Columna de detalles de la compra -->
+                        <div class="purchase-details form-group">
+                            <p class="label-detalle"><strong>Resumen de transacción:</strong></p>
+                            <p>Producto: <span>Licencia anual</span></p>
+                            <p>Subtotal: <span>$10.000,00</span></p>
+                            <p>Impuesto IVA: 21% <span>$2100,00</span></p>
+                            <p>Impuesto MercadoPago: 7% <span>$700,00</span></p>
+                            <hr><br>
+                            <p>Total: <strong><span>$12800,00</span></strong></p>
                         </div>
+
+                        <button type="submit" class="button button--flex" id="checkoutAnual" data-product="checkoutAnual" disabled>Crear orden de compra</button>
                     </div>
                 </div>
     
@@ -180,16 +196,15 @@
                 <div class="services__modal">
                     <div class="services__modal-content">
                         <h4 class="services__modal-title">Licencia semestral</h4>
-                        <i class="uil uil-times services__modal-close"></i>
-                        <div>
+                        <i class="uil uil-times services__modal-close"></i><!-- Columna del formulario -->
+                        <div class="form-container">
                             <form id="purchaseForm">
                                 <div class="form-group">
-                                    <h1 class="section__subtitle">Introduce tu email, lo utilizarás para obtener tu licencia.</h1>
-                                    <label for="email">Correo Electrónico:</label>
-                                    <input type="email" id="email" placeholder="ejemplo@dominio.com" required>
+                                    <label for="email" class="label-email"><strong>Correo electrónico</strong>:</label>
+                                    <input type="email" id="email" placeholder="Escribe tu dirección e-mail..." required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Método de Pago:</label>
+                                    <label class="label-metodopago"><strong>Método de pago</strong>:</label>
                                     <div>
                                         <input type="radio" id="paypal" name="paymentMethod" value="paypal" required>
                                         <label for="paypal">PayPal</label>
@@ -199,12 +214,21 @@
                                         <label for="mercadopago">MercadoPago</label>
                                     </div>
                                 </div>
-                                <button type="submit" id="checkoutSemestral" data-product="checkoutSemestral" disabled>Continuar</button>
                             </form>
                         </div>
-                        <div>
-                            <p>Segunda columna</p>
+                
+                        <!-- Columna de detalles de la compra -->
+                        <div class="purchase-details form-group">
+                            <p class="label-detalle"><strong>Resumen de transacción:</strong></p>
+                            <p>Producto: <span>Licencia semestral</span></p>
+                            <p>Subtotal: <span>$10.000,00</span></p>
+                            <p>Impuesto IVA: 21% <span>$2100,00</span></p>
+                            <p>Impuesto MercadoPago: 7% <span>$700,00</span></p>
+                            <hr><br>
+                            <p>Total: <strong><span>$12800,00</span></strong></p>
                         </div>
+
+                        <button type="submit" class="button button--flex" id="checkoutAnual" data-product="checkoutAnual" disabled>Crear orden de compra</button>
                     </div>
                 </div>
             </div>

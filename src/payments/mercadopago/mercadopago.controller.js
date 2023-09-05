@@ -3,6 +3,7 @@ import { MERCADOPAGO_API_KEY} from "../mercadopago/mercadopago.config.js";
 import { HOST } from '../../config.js'
 import Transaction from "../../models/transaction.model.js";
 import License from "../../models/license.model.js";
+import Product from "../../models/products.model.js";
 import sendEmailPurchase from "../../services/email/mailCompra.js";
 import generateUniqueLicenseKey from "../../services/purchase/generacionLicencia.js";
 
@@ -15,39 +16,36 @@ export const createOrder = async(req, res) => {
     });
     
     const email = req.body.email; //Obtener el email desde el cuerpo de la solicitud
-    const product = req.body.product; //Obtener el producto desde el cuerpo de la solicitud
+    const productType = req.body.product;
 
     _email = email;
+    let productName;
 
-    let item;
-
-    switch (product){
+    switch (productType) {
         case 'checkoutMensual':
-            item = {
-                title: "Licencia mensual franciscososa.net",
-                unit_price: 5,
-                currency_id: "ARS",
-                quantity: 1
-            };
+            productName = "Licencia mensual";
             break;
         case 'checkoutSemestral':
-            item = {
-                title: "Licencia semestral franciscososa.net",
-                unit_price: 10,
-                currency_id: "ARS",
-                quantity: 1
-            };
+            productName = "Licencia semestral";
             break;
         case 'checkoutAnual':
-            item = {
-                title: "Licencia anual franciscososa.net",
-                unit_price: 20,
-                currency_id: "ARS",
-                quantity: 1
-            };
+            productName = "Licencia anual";
             break;
         default:
             return res.status(400).send('Producto no válido');
+    }
+
+    const productFromDB = await Product.findOne({ name: productName })
+
+    if(!productFromDB){
+        return res.status(400).send('Producto no encontrado en la base de datos.');
+    }
+
+    const item = {
+        title: `${productName} franciscososa.net`,
+        unit_price: productFromDB.pricePesos,
+        currency_id: "ARS",
+        quantity: 1,
     }
 
     const result = await mercadopago.preferences.create({
@@ -60,7 +58,7 @@ export const createOrder = async(req, res) => {
         payment_methods:{
             installments: 1, //Solo permito el pago en 1 cuota
         },
-        notification_url: "https://af26-2800-810-548-8427-fc73-8e41-e62c-1370.ngrok.io/webhook",
+        notification_url: "https://16e3-2800-810-548-8427-d34-ebc3-93e9-185e.ngrok.io/webhook",
     });
 
     res.send(result.body);

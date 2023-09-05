@@ -1214,7 +1214,7 @@ img{
 .form-group{
   background-color: var(--body-color);
   border-radius: .5rem;
-  width: 95%;
+  width: 100%;
   height: 86%;
   padding: 10px;
 }

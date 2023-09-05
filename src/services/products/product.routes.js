@@ -22,7 +22,7 @@ router.get('/api/getPrice', async (req, res) => {
     }
 
     try{
-        // Busca el producto en la base de datos
+
         const productData = await Product.findOne({ name: productName });
 
         if(!productData){
@@ -30,7 +30,12 @@ router.get('/api/getPrice', async (req, res) => {
             return;
         }
 
-        res.json({ price: productData.pricePesos });
+        res.json({ 
+            price: {
+                peso: productData.pricePesos,
+                dolar: productData.priceDolar,
+            }
+         });
     } catch (error) {
         res.status(500).send('Error al obtener precio');
     }

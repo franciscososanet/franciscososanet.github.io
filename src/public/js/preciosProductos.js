@@ -3,7 +3,7 @@ function fetchProductPrice(productName, callback) {
         .then(response => response.json())
         .then(data => {
             callback(data.price);
-        });
+    });
 }
 
 function formatNumber(num){
@@ -16,18 +16,16 @@ function parseFormattedNumber(str) {
     return parseFloat(str.replace(".", "").replace(",", "."));
 }
 
-
-function updateSubtotal(price, modal){
+function updateSubtotal(price, modal, paymentMethod){
 
     const paragraphs = Array.from(modal.querySelectorAll('p'));
     const subtotalParagraph = paragraphs.find(p => p.textContent.includes('Subtotal:'));
     
     if(subtotalParagraph){
         const subtotalSpan = subtotalParagraph.querySelector('span');
-        if(subtotalSpan){
-            const formattedPrice = `${formatNumber(price)}`;
-            subtotalSpan.textContent = formattedPrice;
-        }
+        const priceToUse = paymentMethod === 'mercadopago' ? price.peso : price.dolar;
+        const formattedPrice = `${formatNumber(priceToUse)}`;
+        subtotalSpan.textContent = formattedPrice;
     }
 }
 
@@ -47,7 +45,6 @@ function updateIVA(price, modal){
     }
 }
 
-
 function updatePaymentTax(modal){
 
     const paragraphs = Array.from(modal.querySelectorAll('p'));
@@ -66,11 +63,11 @@ function updatePaymentTax(modal){
     if(paymentMethodRadio){
         switch(paymentMethodRadio.value) {
             case 'paypal':
-                taxRate = 0.04;  //4% PayPal
+                taxRate = 0.04; //4% PayPal
                 taxName = 'PayPal';
                 break;
             case 'mercadopago':
-                taxRate = 0.07;  //7% MercadoPago
+                taxRate = 0.07; //7% MercadoPago
                 taxName = 'MercadoPago';
                 break;
             default:
@@ -143,32 +140,43 @@ function calculateTotal(modal){
     }
 }
 
-
-// Calcular valores cuando se abre un modal o modifica un valor
 document.querySelectorAll('.services__button').forEach(button => {
     button.addEventListener('click', (e) => {
         e.preventDefault();
 
         let licenseType = e.target.parentElement.querySelector('.section__title').innerText;
-        console.log("License Type:", licenseType);
 
         const modalType = e.target.getAttribute('data-modal');
         const modal = document.querySelector(`.services__modal[data-modal="${modalType}"]`);
 
+        const paymentMethodRadio = modal.querySelector('input[name="paymentMethod"]:checked');
+        const paymentMethod = paymentMethodRadio ? paymentMethodRadio.value : 'mercadopago'; // Default to 'mercadopago' if none is selected.
+
         fetchProductPrice(licenseType, (price) => {
-            updateSubtotal(price, modal);
-            updateIVA(price, modal);
+            const priceToUse = paymentMethod === 'mercadopago' ? price.peso : price.dolar;
+            updateSubtotal(price, modal, paymentMethod);
+            updateIVA(priceToUse, modal);
             updatePaymentTax(modal);
-            updatePromotionalDiscount(price, modal, licenseType);
+            updatePromotionalDiscount(priceToUse, modal, licenseType);
             calculateTotal(modal);
         });
     });
 });
 
-// Actualizar impuesto cada vez que cambia el método de pago
 document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
         const modal = e.target.closest('.services__modal-content');
-        updatePaymentTax(modal);
+        const paymentMethod = e.target.value;
+        
+        const licenseType = modal.parentElement.previousElementSibling.querySelector('.section__title').innerText;
+
+        fetchProductPrice(licenseType, (price) => {
+            const priceToUse = paymentMethod === 'mercadopago' ? price.peso : price.dolar;
+            updateSubtotal(price, modal, paymentMethod);
+            updateIVA(priceToUse, modal);
+            updatePaymentTax(modal);
+            updatePromotionalDiscount(priceToUse, modal, licenseType);
+            calculateTotal(modal);
+        });
     });
 });

@@ -14,6 +14,10 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    totalPrice: {
+        pricePesos: { type: Number, required: true },
+        priceDolar : { type: Number, required: true},
+    },
     quantitySold:{
         type: Number,
         default: 0

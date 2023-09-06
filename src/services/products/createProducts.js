@@ -3,18 +3,30 @@ import Product from "../../models/products.model.js";
 const initialProducts = [
     {
         name: 'Licencia mensual',
-        pricePesos: 10000,
+        pricePesos: 8125,
         priceDolar: 10,
+        totalPrice: {
+            pricePesos: 10400,
+            priceDolar: 27,
+        }
     },
     {
         name: 'Licencia anual',
-        pricePesos: 10000,
+        pricePesos: 80000,
         priceDolar: 100,
+        totalPrice: {
+            pricePesos: 82400,
+            priceDolar: 216,
+        }
     },
     {
         name: 'Licencia semestral',
-        pricePesos: 50000,
+        pricePesos: 48000,
         priceDolar: 50,
+        totalPrice: {
+            pricePesos: 54240,
+            priceDolar: 148,
+        }
     },
 ]
 

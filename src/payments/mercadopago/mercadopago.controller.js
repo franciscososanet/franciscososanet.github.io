@@ -43,7 +43,7 @@ export const createOrder = async(req, res) => {
 
     const item = {
         title: `${productName} franciscososa.net`,
-        unit_price: productFromDB.pricePesos,
+        unit_price: productFromDB.totalPrice.pricePesos,
         currency_id: "ARS",
         quantity: 1,
     }
@@ -58,7 +58,7 @@ export const createOrder = async(req, res) => {
         payment_methods:{
             installments: 1, //Solo permito el pago en 1 cuota
         },
-        notification_url: "https://16e3-2800-810-548-8427-d34-ebc3-93e9-185e.ngrok.io/webhook",
+        notification_url: "https://f203-2800-810-548-8427-c507-cb84-acfd-68e7.ngrok.io/webhook",
     });
 
     res.send(result.body);

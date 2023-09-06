@@ -112,7 +112,6 @@ function updatePromotionalDiscount(price, modal, licenseType){
 }
 
 function calculateTotal(modal){
-
     const paragraphs = Array.from(modal.querySelectorAll('p'));
 
     const getSpanFromParagraph = (text) => {
@@ -135,8 +134,11 @@ function calculateTotal(modal){
 
     const total = subtotal + iva + paymentTax + discount;
 
+    const paymentMethodRadio = modal.querySelector('input[name="paymentMethod"]:checked');
+    const currencySymbol = paymentMethodRadio && paymentMethodRadio.value === 'paypal' ? 'USD' : 'AR';
+
     if(totalSpan){
-        totalSpan.textContent = `AR$${formatNumber(total)}`;
+        totalSpan.textContent = `${currencySymbol}$${formatNumber(total)}`;
     }
 }
 

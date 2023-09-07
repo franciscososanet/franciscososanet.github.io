@@ -4,28 +4,28 @@ const initialProducts = [
     {
         name: 'Licencia mensual',
         pricePesos: 8125,
-        priceDolar: 10,
+        priceDolar: 23.21,
         totalPrice: {
             pricePesos: 10400,
-            priceDolar: 27,
+            priceDolar: 29.01,
         }
     },
     {
         name: 'Licencia anual',
         pricePesos: 80000,
-        priceDolar: 100,
+        priceDolar: 228.57,
         totalPrice: {
             pricePesos: 82400,
-            priceDolar: 216,
+            priceDolar: 228.57,
         }
     },
     {
         name: 'Licencia semestral',
         pricePesos: 48000,
-        priceDolar: 50,
+        priceDolar: 137.14,
         totalPrice: {
             pricePesos: 54240,
-            priceDolar: 148,
+            priceDolar: 150.86,
         }
     },
 ]

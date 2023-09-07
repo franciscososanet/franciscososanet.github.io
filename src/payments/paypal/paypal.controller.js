@@ -3,6 +3,7 @@ import { HOST } from '../../config.js'
 import axios from "axios"
 import Transaction from "../../models/transaction.model.js";
 import License from "../../models/license.model.js";
+import Product from "../../models/products.model.js";
 import sendEmailPurchase from "../../services/email/mailCompra.js";
 import generateUniqueLicenseKey from "../../services/purchase/generacionLicencia.js";
 
@@ -15,30 +16,33 @@ export const createOrder = async(req, res) => {
 
     _email = email;
 
-    let amount;
     let title;
 
     switch(product){
 
         case 'checkoutMensual':
             title = "Licencia mensual franciscososa.net";
-            amount = "5.00";
             break;
 
         case 'checkoutSemestral':
             title = "Licencia semestral franciscososa.net";
-            amount = "10.00";
             break;
 
         case 'checkoutAnual':
             title = "Licencia anual franciscososa.net";
-            amount = "20.00";
             break;
 
         default: 
             return res.status(400).send('Producto no valido');
 
     }
+
+    const productFromDB = await Product.findOne({ name: title.replace(" franciscososa.net", "") });
+    if(!productFromDB){
+        return res.status(400).send('Producto no encontrado en la base de datos');
+    }
+
+    const amount = productFromDB.totalPrice.priceDolar;
 
     const order = {
         intent: "CAPTURE",
@@ -96,8 +100,6 @@ export const captureOrder = async(req, res) => {
     });
 
     const paymentData = response.data;
-
-    console.log(paymentData);
 
     if(paymentData.status === "COMPLETED"){
         

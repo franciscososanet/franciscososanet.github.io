@@ -166,19 +166,28 @@ document.querySelectorAll('.services__button').forEach(button => {
 });
 
 document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+
     radio.addEventListener('change', (e) => {
         const modal = e.target.closest('.services__modal-content');
         const paymentMethod = e.target.value;
         
-        const licenseType = modal.parentElement.previousElementSibling.querySelector('.section__title').innerText;
+        const modalId = modal.parentElement.getAttribute('data-modal');
+        const planElement = document.querySelector(`.plan[data-modal-id="${modalId}"]`);
 
-        fetchProductPrice(licenseType, (price) => {
-            const priceToUse = paymentMethod === 'mercadopago' ? price.peso : price.dolar;
-            updateSubtotal(price, modal, paymentMethod);
-            updateIVA(priceToUse, modal);
-            updatePaymentTax(modal);
-            updatePromotionalDiscount(priceToUse, modal, licenseType);
-            calculateTotal(modal);
-        });
+        if(planElement){
+            
+            const licenseType = planElement.querySelector('.section__title').innerText;
+            
+            fetchProductPrice(licenseType, (price) => {
+                const priceToUse = paymentMethod === 'mercadopago' ? price.peso : price.dolar;
+                updateSubtotal(price, modal, paymentMethod);
+                updateIVA(priceToUse, modal);
+                updatePaymentTax(modal);
+                updatePromotionalDiscount(priceToUse, modal, licenseType);
+                calculateTotal(modal);
+            });
+        }else{
+            console.error("No se encontró el elemento de plan correspondiente.");
+        }
     });
 });

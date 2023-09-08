@@ -79,7 +79,7 @@
             <span class="section__subtitle">Hacete premium</span>
             <div class="services__container plan-container plan-grid">
                 <!-- Licencia Mensual -->
-                <div class="plan">
+                <div class="plan" data-modal-id="mensual">
                     <h1 class="section__title">Mensual</h1>
                     <ul>
                         <li>Flexibilidad</li>
@@ -129,7 +129,7 @@
                 </div>
     
                 <!-- Licencia Anual -->
-                <div class="plan premium">
+                <div class="plan premium" data-modal-id="anual">
                     <span class="premium-label">25% OFF</span>
                     <h2 class="section__title">Anual</h2>
                     <ul>
@@ -182,7 +182,7 @@
                 </div>
     
                 <!-- Licencia Semestral -->
-                <div class="plan">
+                <div class="plan" data-modal-id="semestral">
                     <h2 class="section__title">Semestral</h2>
                     <span class="premium-label">15% OFF</span>
                     <ul>
@@ -268,8 +268,6 @@
         </div>
     </footer>
 
-    
-
     <!--==================== SCROLL TOP ====================-->
     <a href="#" class="scrollup" id="scroll-up">
         <i class="uil uil-arrow-up scrollup__icon"></i>
@@ -280,16 +278,14 @@
     <!--==================== SWIPER JS ====================-->
     <script src="./js/swiper-bundle.min.js"></script>
 
+    <!--============== GENERACION DE COMPRA =============-->
+    <script src="./js/preciosProductos.js"></script>
+
     <!--==================== MAIN JS ====================-->
     <script src="./js/main.js"></script>
 
     <!--============== GENERACION DE COMPRA =============-->
     <script src="./js/generacionCompra.js"></script>
-
-    <!--============== GENERACION DE COMPRA =============-->
-    <script src="./js/preciosProductos.js"></script>
-
-    
 
 </body>
 </html>

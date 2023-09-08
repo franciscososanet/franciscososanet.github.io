@@ -35,14 +35,13 @@ navLink.forEach(n => n.addEventListener('click', linkAction));
 const modalViews = document.querySelectorAll('.services__modal'),
       modalBtns = document.querySelectorAll('.services__button'),
       modalCloses = document.querySelectorAll('.services__modal-close'),
-      overlay = document.querySelector('.modal-overlay'); // selecciona el overlay
+      overlay = document.querySelector('.modal-overlay');
 
 let modal = function(modalClick){
-    // Mueve el overlay justo antes del modal que estás mostrando
     modalViews[modalClick].before(overlay);
 
     modalViews[modalClick].classList.add('active-modal');
-    overlay.style.display = 'block'; // muestra el overlay cuando el modal está activo
+    overlay.style.display = 'block';
 };
 
 modalBtns.forEach((modalBtn, i) => {
@@ -57,7 +56,7 @@ modalCloses.forEach((modalClose) => {
         modalViews.forEach((modalView) => {
             modalView.classList.remove('active-modal');
         });
-        overlay.style.display = 'none'; // oculta el overlay cuando el modal se cierra
+        overlay.style.display = 'none';
     });
 });
 

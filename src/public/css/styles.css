@@ -66,6 +66,12 @@
         --small-font-size: .875rem;
         --smaller-font-size: .813rem;
     }
+
+    .plan {
+      width: 16rem;
+    }
+
+
 }
 
 /*========== Variables Dark theme ==========*/
@@ -156,6 +162,18 @@ img{
 .section__subtitle{
   text-align: center;
 }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0 ,0 , 0.7);
+  z-index: 800
+}
+
 
 /*==================== LAYOUT ====================*/
 .container{
@@ -460,7 +478,6 @@ img{
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, .15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -761,10 +778,6 @@ img{
     padding: 0 .5rem;
   }
 
-  /* .project__img{
-    width: 200px;
-  } */
-
   .testimonial__data,
   .testimonial__header{
     flex-direction: column;
@@ -804,7 +817,6 @@ img{
     justify-self: center;
   }
 
-  /* .about__container, */
   .skills__container,
   .portfolio__content,
   .project__container,
@@ -910,10 +922,6 @@ img{
     text-align: initial;
   }
 
-  /* .about__info {
-    justify-content: space-between;
-  } */
-
   .qualification__tabs {
     justify-content: center;
   }
@@ -993,39 +1001,13 @@ img{
     margin-top: 4.5rem;
   }
 
-  /* Reglas de los tablets y pantallas más grandes */
-  .plan-container.plan-grid {
-
+  /* .plan-container.plan-grid {
     flex-direction: row; 
     gap: 2rem; 
-  }
+  } */
 }
 
-/* Para tablets y móviles */
-@media (max-width: 768px) {
-  .licencias .services__modal-content {
-    grid-template-columns: 1fr;
-    width: 100%;
-    padding: 1rem;
-  }
 
-  .licencias .services__modal-title {
-    grid-column: 1;
-  }
-}
-
-/* Para tablets y móviles */
-@media (max-width: 768px) {
-  .licencias .services__modal-content{
-    grid-template-columns: 1fr;
-    width: 100%; 
-    padding: 1rem;
-  }
-
-  .licencias .services__modal-title {
-    grid-column: 1;
-  }
-}
 
 /* For large devices */
 @media screen and (min-width: 1024px){
@@ -1110,7 +1092,7 @@ img{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 26rem;
+  height: 24rem;
   margin-top: calc(var(--height-difference) / 2); /* Añade la mitad de la diferencia al margen superior */
   margin-bottom: calc(var(--height-difference) / 2); /* Añade la mitad de la diferencia al margen inferior */
 }
@@ -1154,7 +1136,7 @@ img{
 
 .premium {
   position: relative;
-  height: calc(26rem + var(--height-difference)); /* Añade la diferencia completa a la altura */
+  height: calc(24rem + var(--height-difference)); /* Añade la diferencia completa a la altura */
 }
 
 .plan:hover {
@@ -1169,14 +1151,18 @@ img{
 /* MODALS DE LICENCIAS */
 
 .licencias .services__modal {
-  position: absolute; 
-  top: 0; 
-  left: 0; 
+  position: fixed; 
+  top: 50%;
+  left: 50%; 
   width: 100%; 
-  height: auto; 
-  background: var(--body-color); 
-  z-index: 1000; 
+  height: fit-content;
+  /* background: var(--body-color);  */
+  z-index: 10000; 
   overflow: hidden; 
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .plan-container {
@@ -1258,11 +1244,11 @@ img{
     margin-top: -1rem;
 }
 
-@media screen and (max-width: 992px) {
+/* @media screen and (max-width: 992px) {
   .plan-container.plan-grid {
     flex-direction: column;
   }
-}
+} */
 
 .email__modal-content{
   width: 80%;
@@ -1306,4 +1292,57 @@ img{
   font-style: italic;
   color: var(--text-color-light);
   
+}
+
+/* Para tablets y móviles */
+@media screen and (max-width: 864px) { 
+
+  .licencias .services__modal{   /* Esto es lo que TAPA A LAS COLUMNAS DE ATRAS */
+    height: fit-content;
+  }
+
+  .licencias .services__modal-content {
+    height: auto;
+    grid-template-columns: 1fr; 
+  }
+
+  .licencias .services__modal-title{
+    grid-column: 1 / -1; 
+  }
+
+  .purchase-details{
+    height: auto;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+  }
+
+  #checkoutMensual,
+  #checkoutAnual,
+  #checkoutSemestral {
+    grid-column: 1 / -1;
+  }
+
+}
+
+@media screen and (max-width: 960px) {
+  
+  .plan {
+    width: 16rem;
+  }
+}
+
+@media screen and (max-width: 864px) {
+  
+  .plan {
+    height: 24rem; 
+    width: 18rem;
+  }
+
+  .plan-container.plan-grid {
+    flex-direction: column; 
+    gap: 0; 
+  }
+
+  
+   
 }

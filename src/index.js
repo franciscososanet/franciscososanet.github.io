@@ -7,8 +7,9 @@ import { PORT, MONGO_URI } from "./config.js";
 import mercadopagoPaymentRoutes from './payments/mercadopago/mercadopago.routes.js';
 import paypalPaymentRoutes from './payments/paypal/paypal.routes.js';
 import mailContactoRoutes from './services/email/mailContacto.routes.js';
-import productRoutes from './services/products/product.routes.js'
+import productRoutes from './services/products/product.routes.js';
 import initializeProducts from './services/products/createProducts.js';
+import unityRoutes from './services/unity/unitydb.routes.js'
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(mercadopagoPaymentRoutes);
 app.use(paypalPaymentRoutes);
 app.use(mailContactoRoutes);
 app.use(productRoutes);
+app.use(unityRoutes);
 
 app.use(express.static(path.resolve('src/public')));
 

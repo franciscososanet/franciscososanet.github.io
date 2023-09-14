@@ -10,6 +10,7 @@ import mailContactoRoutes from './services/email/mailContacto.routes.js';
 import productRoutes from './services/products/product.routes.js';
 import initializeProducts from './services/products/createProducts.js';
 import unityRoutes from './services/unity/unitydb.routes.js'
+import notificationRoutes from './services/unity/notifications.routes.js'
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(paypalPaymentRoutes);
 app.use(mailContactoRoutes);
 app.use(productRoutes);
 app.use(unityRoutes);
+app.use(notificationRoutes);
 
 app.use(express.static(path.resolve('src/public')));
 

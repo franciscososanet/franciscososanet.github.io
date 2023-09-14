@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const notificationSchema = new mongoose.Schema({
-    id: Number,
+
     notification: String,
     redirect: String,
     date:{

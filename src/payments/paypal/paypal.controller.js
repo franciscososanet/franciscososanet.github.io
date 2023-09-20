@@ -117,6 +117,12 @@ export const captureOrder = async(req, res) => {
             purchaseDate: formatPurchaseDate(paymentData.purchase_units[0].payments.captures[0].create_time),
             expirationDate: expirationDate,
             currency: paymentData.purchase_units[0].payments.captures[0].amount.currency_code,
+            used: {
+                status: false,
+                date: 'N/A',
+                program: 'N/A',
+                storeName: 'N/A',
+            },
             buyer: {
                 firstName: paymentData.payer.name.given_name,
                 lastName: paymentData.payer.name.surname,

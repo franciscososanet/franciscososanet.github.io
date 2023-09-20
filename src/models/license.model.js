@@ -7,6 +7,12 @@ const licenseSchema = new mongoose.Schema({
     purchaseDate: String,
     expirationDate: String,
     currency: String,
+    used: {
+        status: Boolean,
+        date: String,
+        program: String,
+        storeName: String,
+    },
     buyer: {
         firstName: String,
         lastName: String,

@@ -11,6 +11,7 @@ import productRoutes from './services/products/product.routes.js';
 import initializeProducts from './services/products/createProducts.js';
 import unityRoutes from './services/unity/unitydb.routes.js'
 import notificationRoutes from './services/unity/notifications.routes.js'
+import licenseActivation from './services/unity/activacionLicencia.js';
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(mailContactoRoutes);
 app.use(productRoutes);
 app.use(unityRoutes);
 app.use(notificationRoutes);
+app.use(licenseActivation);
 
 app.use(express.static(path.resolve('src/public')));
 

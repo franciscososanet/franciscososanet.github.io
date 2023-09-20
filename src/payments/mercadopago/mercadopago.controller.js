@@ -58,10 +58,10 @@ export const createOrder = async(req, res) => {
         payment_methods:{
             installments: 1, //Solo permito el pago en 1 cuota
         },
-        notification_url: "https://e341-2800-810-548-8427-c026-334b-32b4-1511.ngrok.iowebhook",
+        notification_url: "https://b49c-2800-810-548-ac4-a047-daca-c1ce-b16c.ngrok.io/webhook",
     });
 
-    res.send(result.body);
+    res.send(result.body);    
 }
 
 export const receiveWebhook = async(req, res) => {
@@ -69,6 +69,7 @@ export const receiveWebhook = async(req, res) => {
     const payment = req.query;
 
     try{
+
         if(payment.type === "payment"){
 
             res.sendStatus(200);
@@ -91,6 +92,12 @@ export const receiveWebhook = async(req, res) => {
                     purchaseDate: formatPurchaseDate(data.body.date_created),
                     expirationDate: expirationDate,
                     currency: data.body.currency_id,
+                    used: {
+                        status: false,
+                        date: 'N/A',
+                        program: 'N/A',
+                        storeName: 'N/A',
+                    },
                     buyer: {
                         firstName: data.body.payer.first_name || 'N/A',
                         lastName: data.body.payer.last_name || 'N/A',
@@ -159,12 +166,12 @@ export const receiveWebhook = async(req, res) => {
                     console.log("PAGO APROBADO");
                 }catch (error) {
                     console.log(error);
-                    // return res.sendStatus(500).json({error: error.message });
+                    return res.sendStatus(500).json({error: error.message });
                 }
 
             }else if(data.body.status === "rejected"){ //Procesar pagos rechazados
                 console.log("Pago rechazado");
-            }else if( data.body.status === 'in_process'){
+            }else if(data.body.status === 'in_process'){
                 console.log("Pago en proceso");
             }else if(data.body.status === 'undefined'){
                 console.log("data.body.status = undefined");

@@ -14,6 +14,12 @@ router.post('/api/activateLicense', async (req, res) => {
         const licenseData = await License.findOne({ licenseKey: licenseKey });
         if(!licenseData) return res.status(404).json({ message: 'Licencia no válida' });
 
+        const used = licenseData.used.status;
+        if(used) return res.status(404).json({ message: 'Licencia en uso' });
+
+        const initialDate = licenseData.initialDate;
+        const expirationDate = licenseData.expirationDate;
+
         licenseData.used = { //Actualizar el licencia.used en DB con los datos recibidos desde Unity
             status: true,
             date: currentDate,
@@ -21,8 +27,13 @@ router.post('/api/activateLicense', async (req, res) => {
             storeName: storeName,
         }
         await licenseData.save();
+        
 
-        res.status(200).json({ message: 'Licencia activada exitosamente' });
+        res.status(200).json({
+            message: 'Licencia activada exitosamente',
+            initialDate: initialDate,
+            expirationDate: expirationDate,
+        });
 
     }catch(error){
 

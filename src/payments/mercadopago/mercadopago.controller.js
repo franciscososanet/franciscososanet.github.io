@@ -58,7 +58,7 @@ export const createOrder = async(req, res) => {
         payment_methods:{
             installments: 1, //Solo permito el pago en 1 cuota
         },
-        notification_url: "https://b49c-2800-810-548-ac4-a047-daca-c1ce-b16c.ngrok.io/webhook",
+        notification_url: "https://284d-2800-810-548-ac4-8841-fc26-e4fa-1ae4.ngrok.io/webhook",
     });
 
     res.send(result.body);    
@@ -197,10 +197,13 @@ function formatPurchaseDate(date){
     const day = String(dateObj.getDate()).padStart(2, '0');
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
     const year = dateObj.getFullYear();
-    const hours = String(dateObj.getHours()).padStart(2, '0');
+    let hours = dateObj.getHours();
     const minutes = String(dateObj.getMinutes()).padStart(2, '0');
     const seconds = String(dateObj.getSeconds()).padStart(2, '0');
-    const ampm = dateObj.getHours() >= 12 ? 'PM' : 'AM';
+    let ampm = 'AM';
+
+    if(hours >= 12) hours -= 12; ampm = 'PM';
+    if(hours === 0) hours = 12;
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
 }

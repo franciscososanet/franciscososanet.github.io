@@ -207,20 +207,31 @@ function formatPurchaseDate(date){
     const day = String(dateObj.getDate()).padStart(2, '0');
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
     const year = dateObj.getFullYear();
-    const hours = String(dateObj.getHours()).padStart(2, '0');
+    let hours = dateObj.getHours();
     const minutes = String(dateObj.getMinutes()).padStart(2, '0');
     const seconds = String(dateObj.getSeconds()).padStart(2, '0');
-    const ampm = dateObj.getHours() >= 12 ? 'PM' : 'AM';
+
+    let ampm = 'AM';
+
+    if(hours >= 12){
+        ampm = 'PM';
+        if(hours > 12){
+            hours -= 12;
+        }
+    }else if(hours === 0){
+        hours = 12;
+    }
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
 }
 
 function calculateExpirationDate(purchaseDate, productName){
+
     const [datePart, timePart] = purchaseDate.split('T');
     const [year, month, day] = datePart.split('-').map(Number);
-    const [hours, minutes, seconds] = timePart.replace('Z', '').split(':').map(Number);  // hemos añadido un replace('Z', '') para quitar la 'Z' del final
-    
-    const dateObj = new Date(year, month - 1, day, hours, minutes, seconds); 
+    const [hours, minutes, seconds] = timePart.replace('Z', '').split(':').map(Number);
+
+    const dateObj = new Date(year, month - 1, day, hours, minutes, seconds);
 
     const lowerCaseProductName = productName.toLowerCase();
 
@@ -238,8 +249,14 @@ function calculateExpirationDate(purchaseDate, productName){
     const hoursStr = String(dateObj.getHours()).padStart(2, '0');
     const minutesStr = String(dateObj.getMinutes()).padStart(2, '0');
     const secondsStr = String(dateObj.getSeconds()).padStart(2, '0');
-    
-    const expirationDate = `${dayStr}/${monthStr}/${yearStr} ${hoursStr}:${minutesStr}:${secondsStr}`;
+    let ampm = dateObj.getHours() >= 12 ? 'PM' : 'AM';
+
+    if(dateObj.getHours() === 0){
+        ampm = 'AM';
+        hoursStr = '12';
+    }
+
+    const expirationDate = `${dayStr}/${monthStr}/${yearStr} ${hoursStr}:${minutesStr}:${secondsStr} ${ampm}`;
 
     return expirationDate;
 }

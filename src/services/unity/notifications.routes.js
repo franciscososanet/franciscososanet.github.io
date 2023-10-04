@@ -14,10 +14,12 @@ router.get('/api/getNotifications', async (req, res) => {
 
         const formattedDate = `${day}/${month}/${year}`; //Fecha actual en dd/mm/yyyy
 
-        const notificationData = await Notification.find({ //Notificaciones cuyas fecha actual estén entre la creation y expiration
-            "date.creation": { $lte: formattedDate}, 
-            "date.expiration": { $gte: formattedDate},
+        const notificationData = await Notification.findOne({ //Notificaciones cuyas fecha actual estén entre la creation y expiration
+            // "date.creation": { $lte: formattedDate}, 
+            // "date.expiration": { $gte: formattedDate},
         }).select('notification redirect -_id');
+
+        console.log(notificationData);
 
         if(!notificationData || notificationData.length === 0){
             return res.status(404).send('No se encontraron notificaciones con ese filtro.')

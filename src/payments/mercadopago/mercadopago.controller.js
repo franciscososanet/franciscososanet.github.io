@@ -202,8 +202,14 @@ function formatPurchaseDate(date){
     const seconds = String(dateObj.getSeconds()).padStart(2, '0');
     let ampm = 'AM';
 
-    if(hours >= 12) hours -= 12; ampm = 'PM';
-    if(hours === 0) hours = 12;
+    if(hours >= 12){
+        ampm = 'PM';
+        if(hours > 12){
+            hours -= 12;
+        }
+    }else if(hours === 0){
+        hours = 12;
+    }
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
 }
@@ -212,23 +218,31 @@ function calculateExpirationDate(purchaseDate, productName){
 
     const [datePart, timePart, ampm] = purchaseDate.split(' ');
     const [day, month, year] = datePart.split('/').map(Number);
-    const [hours, minutes, seconds] = timePart.split(':').map(Number);
-    const dateObj = new Date(year, month - 1, day, hours % 12 + (ampm === 'PM' ? 12 : 0), minutes, seconds);
+    let [hours, minutes, seconds] = timePart.split(':').map(Number);
+    
+    //Ajustar las horas para el formato de 12 horas
+    if(ampm === 'PM' && hours !== 12){
+        hours += 12;
+    }else if (ampm === 'AM' && hours === 12){
+        hours = 0;
+    }
+
+    const dateObj = new Date(year, month - 1, day, hours, minutes, seconds);
 
     const lowerCaseProductName = productName.toLowerCase();
 
     if(lowerCaseProductName.includes("licencia mensual")){
         dateObj.setMonth(dateObj.getMonth() + 1);
-    }else if(lowerCaseProductName.includes("licencia semestral")){
+    }else if (lowerCaseProductName.includes("licencia semestral")){
         dateObj.setMonth(dateObj.getMonth() + 6);
-    }else if(lowerCaseProductName.includes("licencia anual")){
+    }else if (lowerCaseProductName.includes("licencia anual")){
         dateObj.setFullYear(dateObj.getFullYear() + 1);
     }
 
     const dayStr = String(dateObj.getDate()).padStart(2, '0');
     const monthStr = String(dateObj.getMonth() + 1).padStart(2, '0');
     const yearStr = dateObj.getFullYear();
-    const hoursStr = String(dateObj.getHours() % 12).padStart(2, '0');
+    const hoursStr = String(dateObj.getHours()).padStart(2, '0'); //Asegura que las horas se muestren como "12" en lugar de "0"
     const minutesStr = String(dateObj.getMinutes()).padStart(2, '0');
     const secondsStr = String(dateObj.getSeconds()).padStart(2, '0');
     const ampmStr = dateObj.getHours() >= 12 ? 'PM' : 'AM';

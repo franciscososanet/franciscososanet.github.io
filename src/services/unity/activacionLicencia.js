@@ -17,7 +17,7 @@ router.post('/api/activateLicense', async (req, res) => {
         const used = licenseData.used.status;
         if(used) return res.status(404).json({ message: 'Licencia en uso' });
 
-        const initialDate = licenseData.initialDate;
+        const purchaseDate = licenseData.purchaseDate;
         const expirationDate = licenseData.expirationDate;
 
         licenseData.used = { //Actualizar el licencia.used en DB con los datos recibidos desde Unity
@@ -31,7 +31,7 @@ router.post('/api/activateLicense', async (req, res) => {
 
         res.status(200).json({
             message: 'Licencia activada exitosamente',
-            initialDate: initialDate,
+            purchaseDate: purchaseDate,
             expirationDate: expirationDate,
         });
 

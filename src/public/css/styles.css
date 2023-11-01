@@ -1034,7 +1034,6 @@ img{
     margin-top: -7rem;
   }
   
-
   .portfolio__content{
     column-gap: 5rem;
   }
@@ -1296,7 +1295,17 @@ img{
 }
 
 /* Para tablets y móviles */
-@media screen and (max-width: 864px) { 
+@media screen and (max-width: 864px), (min-height: 920px){ 
+
+  .plan {
+    height: 24rem; 
+    width: 18rem;
+  }
+
+  .plan-container.plan-grid {
+    flex-direction: column; 
+    gap: 0; 
+  } 
 
   .licencias .services__modal{   /* Esto es lo que TAPA A LAS COLUMNAS DE ATRAS */
     height: fit-content;
@@ -1323,27 +1332,19 @@ img{
     grid-column: 1 / -1;
   }
 
+  .footer{
+  
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0;
+  }
+
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 960px){
   
   .plan {
     width: 16rem;
   }
-}
-
-@media screen and (max-width: 864px) {
-  
-  .plan {
-    height: 24rem; 
-    width: 18rem;
-  }
-
-  .plan-container.plan-grid {
-    flex-direction: column; 
-    gap: 0; 
-  }
-
-  
-   
 }

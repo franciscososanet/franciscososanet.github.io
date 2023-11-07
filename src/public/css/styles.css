@@ -1295,7 +1295,7 @@ img{
 }
 
 /* Para tablets y móviles */
-@media screen and (max-width: 864px), (min-height: 920px){ 
+@media screen and (max-width: 864px)/* , (min-height: 920px)*/{  
 
   .plan {
     height: 24rem; 
